@@ -10,15 +10,11 @@ using UnityEngine;
 public class PerlinNoise
 {
     RandomGradientGenerator m_gradientGenerator;
-    int m_period;
     int m_seed;
-    int m_amplitude;
 
-    public PerlinNoise(int period, int seed, int amplitude)
+    public PerlinNoise(int seed)
     {
         m_gradientGenerator = new RandomGradientGenerator(seed);
-        m_period = period;
-        m_amplitude = amplitude;
     }
 
     public int Seed
@@ -30,19 +26,26 @@ public class PerlinNoise
         }
     }
     
-    public float GetValueAtPoint(Vector2 position)
+    public float GetValueAtPoint(Vector2 position, int period)
     {
-        int halfPeriod = m_period / 2;
+        int halfPeriod = period / 2;
 
         Vector2 pos = position;
 
         //Calculation of center point of point's area
         //Note: this realization uses a world separation, where center of area with index (0,0) is placed at point (0,0)
-        Vector2 areaCenter = new Vector2(Mathf.Round(position.x / m_period) * m_period, Mathf.Round(position.y / m_period) * m_period);
+        Vector2 areaCenter;
+
+        int xtAreaNum = GetChunkIndexOfValue(position.x, period);
+        int ytAreaNum = GetChunkIndexOfValue(position.y, period);
+
+        areaCenter = new Vector2(Mathf.Round(position.x / (period-1)) * (period - 1), Mathf.Round(position.y / (period - 1)) * (period - 1));
+
+        //areaCenter = new Vector2(Mathf.Round(position.x / m_period) * m_period, Mathf.Round(position.y / m_period) * m_period);
 
         //Calculation of relative positions of point at the area
-        float horizontalPositionInArea = (Mathf.Abs((areaCenter.x - halfPeriod) - position.x)) / (float)m_period;
-        float verticalPositionInArea = (Mathf.Abs((areaCenter.y - halfPeriod) - position.y)) / (float)m_period;
+        float horizontalPositionInArea = (Mathf.Abs((areaCenter.x - halfPeriod) - position.x)) / (float)period;
+        float verticalPositionInArea = (Mathf.Abs((areaCenter.y - halfPeriod) - position.y)) / (float)period;
 
         //Calculation of corners of the area where point is placed
         Vector2 topLeftCorner = new Vector2((int)areaCenter.x - halfPeriod, (int)areaCenter.y + halfPeriod);
@@ -57,10 +60,10 @@ public class PerlinNoise
         Vector2 botRightGradient = m_gradientGenerator.GetGradientAtPoint(botRightCorner);
 
         //Getting directional vectors from point to corners
-        Vector2 topLeftToPoint = (position - topLeftCorner) / m_period;
-        Vector2 topRightToPoint = (position - topRightCorner) / m_period;
-        Vector2 botLeftToPoint = (position - botLeftCorner) / m_period;
-        Vector2 botRightToPoint = (position - botRightCorner) / m_period;
+        Vector2 topLeftToPoint = (position - topLeftCorner) / period;
+        Vector2 topRightToPoint = (position - topRightCorner) / period;
+        Vector2 botLeftToPoint = (position - botLeftCorner) / period;
+        Vector2 botRightToPoint = (position - botRightCorner) / period;
 
         //Getting DOT product of gradients and directional vectors
         float tlDot = Dot(topLeftToPoint, topLeftGradient);
@@ -95,5 +98,19 @@ public class PerlinNoise
     {
         return a + (b - a) * t;
         //return (b - a) * ((float)3 - t * (float)2) * t * t + a;
+    }
+
+    private int GetChunkIndexOfValue(float val, float step)
+    {
+        float relativePosition = (val + (step / 2)) / step;
+        if (relativePosition > 0) 
+        {
+            return Mathf.FloorToInt(relativePosition);
+            
+        }
+        else
+        {
+            return Mathf.CeilToInt(relativePosition);
+        }
     }
 }

@@ -9,11 +9,20 @@ public class PerlinNoiseGenerator : Generator
     [SerializeField] int middleFrequencyPeriod;
     [SerializeField] int highFrequencyPeriod;
 
+    [SerializeField] float lowFrequencyAmplitude;
+    [SerializeField] float middleFrequencyAmplitude;
+    [SerializeField] float highFrequencyAmplitude;
+
     PerlinNoise m_perlinNoiseGenerator;
 
-    private void Start()
+    private void Awake()
     {
-        m_perlinNoiseGenerator = new PerlinNoise(middleFrequencyPeriod, m_generationSeed, 1);
+        Init();
+    }
+
+    private void Init()
+    {
+        m_perlinNoiseGenerator = new PerlinNoise(m_generationSeed);
     }
 
     override public int Seed
@@ -27,37 +36,42 @@ public class PerlinNoiseGenerator : Generator
     }
 
     
-    public override float[,] GenerateMatrix(int size, int height, int xOffStep, int yOffStep)
+    public override float[,] GenerateMatrix(int size, int xOffStep, int yOffStep)
     {
-        float[][] resultMatrix = new float[size][];
+        if(m_perlinNoiseGenerator == null) { Init(); }
+        float[,] lowFrequencyNoise = GenerateSingleOctaveNoise(size, lowFrequencyPeriod, xOffStep, yOffStep);
+        float[,] middleFrequencyNoise = GenerateSingleOctaveNoise(size, middleFrequencyPeriod, xOffStep, yOffStep);
+        float[,] highFrequencyNoise = GenerateSingleOctaveNoise(size, highFrequencyPeriod, xOffStep, yOffStep);
+        float[,] summ = new float[size,size];
+
         for (int i = 0; i < size; i++)
         {
-            resultMatrix[i] = new float[size];
+            for (int j = 0; j < size; j++)
+            {
+                summ[i, j] = lowFrequencyNoise[i, j] * lowFrequencyAmplitude + middleFrequencyNoise[i, j] * middleFrequencyAmplitude + highFrequencyNoise[i, j] * highFrequencyAmplitude;
+                //summ[i, j] = middleFrequencyNoise[i, j];
+            }
         }
+        //summ = Normalize(summ);
+        return summ;
+    }
 
+    public float[,] GenerateSingleOctaveNoise(int size, int period, int xOffStep, int yOffStep)
+    {
         float[,] resMatrix = new float[size, size];
         int halfSize = size / 2;
-        Vector2 areaCenter = new Vector2(size * xOffStep, size * yOffStep);
+        Vector2 areaCenter = new Vector2(size * xOffStep - xOffStep, size * yOffStep - yOffStep);
         for (int x = 0; x < size; x++)
         {
             float temp = 0;
-            float test;
-            bool firstRow = true;
-            for(int y = 0; y < size; y++)
+            for (int y = 0; y < size; y++)
             {
                 Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
-                temp = m_perlinNoiseGenerator.GetValueAtPoint(pointPosition);
+                temp = m_perlinNoiseGenerator.GetValueAtPoint(pointPosition, period);
                 resMatrix[x, y] = temp;
-                resultMatrix[x][y] = temp;
-                if (firstRow) test = temp;
-                firstRow = false;
             }
-            firstRow = true;
         }
-        DebugFirstRow(resultMatrix);
         float[,] normalizedMatrix = NormalizeToPositive(resMatrix);
-        //DebugFirstRow(normalizedMatrix);
         return normalizedMatrix;
-    
     }
 }

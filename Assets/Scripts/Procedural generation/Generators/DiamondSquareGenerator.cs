@@ -20,9 +20,8 @@ public class DiamondSquareGenerator : Generator
 
     public override int Seed { get => m_generationSeed; set => m_generationSeed = value; }
 
-    public override float[,] GenerateMatrix(int size, int height, int xOffStep, int yOffStep)
+    public override float[,] GenerateMatrix(int size, int xOffStep, int yOffStep)
     {
-        generationHeight = height;
         size = SetNumTo2Pow(size);
         float[,] resMatrix = new float[size, size];
         

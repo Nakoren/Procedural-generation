@@ -23,12 +23,11 @@ public class RandomGradientGenerator
         int y = (int)position.y;
 
         //Hash function for coordinates and seed, created using "Slam numpad method"
-        int hashedVectorForX = (((x + 1) << 5) * (m_seed >> 41)) + (x * m_seed ^ y) + (((y + 1) << 3) * (m_seed >> 7));
-        int hashedVectorForY = (((x + 1) << 7599) * (m_seed >> 6983)) + (x * m_seed ^ y) + (((y + 1) << 4356) * (m_seed >> 425306));
-        Random.InitState(hashedVectorForX);
-        float xVal = Random.Range(-100,100) / (float)100;
-        Random.InitState(hashedVectorForY);
-        float yVal = Random.Range(-100, 100) / (float)100;
+        int hashedVector = (((x + 1) * 781) % 7852 * (m_seed * 698) % 8213) + ((x + 1) * m_seed ^ y) + (((y + 1) * 356) % 6842 * (m_seed * 4256) % 4258);
+        Random.InitState(hashedVector);
+        float angle = Random.Range(0,360);
+        float xVal = Mathf.Sin(angle);
+        float yVal = Mathf.Cos(angle);
         return new Vector2(xVal, yVal);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Generator : MonoBehaviour
 {
     protected int m_generationSeed;
-    abstract public float[,] GenerateMatrix(int size, int height, int xOffStep, int yOffStep);
+    abstract public float[,] GenerateMatrix(int size, int xOffStep, int yOffStep);
 
     abstract public int Seed { get; set; }
 
@@ -29,6 +29,26 @@ public abstract class Generator : MonoBehaviour
             for(int j = 0; j < source.GetLength(1); j++)
             {
                 source[i,j] = (source[i,j]/2) + (float)0.5;
+            }
+        }
+        return source;
+    }
+
+    protected float[,] Normalize(float[,] source)
+    {
+        float max = 0;
+        for (int i = 0; i < source.GetLength(0); i++)
+        {
+            for (int j = 0; j < source.GetLength(1); j++)
+            {
+                max = Mathf.Max(max, source[i,j]);
+            }
+        }
+        for (int i = 0; i < source.GetLength(0); i++)
+        {
+            for (int j = 0; j < source.GetLength(1); j++)
+            {
+                source[i,j] /= max;
             }
         }
         return source;
