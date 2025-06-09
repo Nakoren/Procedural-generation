@@ -56,11 +56,11 @@ public class PerlinNoiseGenerator : Generator
         return summ;
     }
 
-    public float[,] GenerateSingleOctaveNoise(int size, int period, int xOffStep, int yOffStep)
+    public float[,] GenerateSingleOctaveNoise(int size, int period, int xOffSet, int yOffSet)
     {
         float[,] resMatrix = new float[size, size];
         int halfSize = size / 2;
-        Vector2 areaCenter = new Vector2(size * xOffStep - xOffStep, size * yOffStep - yOffStep);
+        Vector2 areaCenter = new Vector2(size * xOffSet - xOffSet, size * yOffSet - yOffSet);
         for (int x = 0; x < size; x++)
         {
             float temp = 0;

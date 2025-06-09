@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3ba6c91b7bae744bd1ecea10cbb933, type: 3}
   m_Name: FlowerFieldsBiom
   m_EditorClassIdentifier: 
-  bottomHumidity: 0
-  topHumidity: 0
-  bottomTemperature: 0
-  topTemperature: 0
+  bottomHumidity: 35
+  topHumidity: 65
+  bottomTemperature: 65
+  topTemperature: 100
   biomHeight: 0
+  terrainLayer: {fileID: 8574412962073106934, guid: 2f142a7b9a47af64ba58579e18778fca, type: 2}

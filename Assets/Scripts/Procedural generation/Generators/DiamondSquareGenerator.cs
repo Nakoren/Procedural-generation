@@ -14,10 +14,6 @@ public class DiamondSquareGenerator : Generator
     [SerializeField] private int BreakInterval;
     [SerializeField] private int SmoothRange = 4;
 
-    private float totalOffset = 0;
-    private int offsetCount = 0;
-    private int generationHeight;
-
     public override int Seed { get => m_generationSeed; set => m_generationSeed = value; }
 
     public override float[,] GenerateMatrix(int size, int xOffStep, int yOffStep)

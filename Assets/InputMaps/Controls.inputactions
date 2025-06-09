@@ -78,7 +78,7 @@
                 {
                     "name": "down",
                     "id": "72b60402-5112-4699-bed5-ccbe23f29b19",
-                    "path": "<Keyboard>/ctrl",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

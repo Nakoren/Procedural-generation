@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3ba6c91b7bae744bd1ecea10cbb933, type: 3}
   m_Name: DenseTaigaBiom
   m_EditorClassIdentifier: 
-  bottomHumidity: 70
+  bottomHumidity: 65
   topHumidity: 100
   bottomTemperature: 0
-  topTemperature: 30
+  topTemperature: 35
   biomHeight: 0
+  terrainLayer: {fileID: 8574412962073106934, guid: 67a232b20bebdf74f9a5f7e3baf45724, type: 2}

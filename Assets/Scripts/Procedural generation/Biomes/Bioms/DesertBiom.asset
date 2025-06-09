@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: DesertBiom
   m_EditorClassIdentifier: 
   bottomHumidity: 0
-  topHumidity: 30
-  bottomTemperature: 70
+  topHumidity: 35
+  bottomTemperature: 65
   topTemperature: 100
   biomHeight: 0
+  terrainLayer: {fileID: 8574412962073106934, guid: a368ade6581fc8e4597aa019fc205fab, type: 2}

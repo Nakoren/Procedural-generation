@@ -11,9 +11,10 @@ public class Biom : ScriptableObject
     public float topTemperature;
 
     public int biomHeight;
+    public TerrainLayer terrainLayer;
 
-    public bool CheckBiom(int humidity, int temperature)
+    public bool CheckBiom(float humidity, float temperature)
     {
-        return ((humidity > bottomHumidity) && (humidity < topHumidity)) && ((temperature > bottomTemperature) && (temperature < topTemperature));
+        return ((humidity > bottomHumidity) && (humidity <= topHumidity)) && ((temperature > bottomTemperature) && (temperature <= topTemperature));
     }
 }

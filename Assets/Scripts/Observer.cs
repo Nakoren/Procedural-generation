@@ -35,7 +35,9 @@ public class Observer : MonoBehaviour
     public void Move(Vector3 direction)
     {
         Vector3 forwardMovement = transform.forward * direction.z;
+        forwardMovement.y = 0;
         Vector3 horizontalMovement = transform.right * direction.x;
+        horizontalMovement.y = 0;
         Vector3 verticalMovement = Vector3.up * direction.y;
 
         Vector3 movement = Vector3.ClampMagnitude(forwardMovement + horizontalMovement + verticalMovement, 1);

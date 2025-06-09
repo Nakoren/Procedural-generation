@@ -22,7 +22,7 @@ public class PerlinNoise
         get { return m_seed; }
         set { 
             m_seed = value;
-            m_gradientGenerator.Seed = m_seed;
+            m_gradientGenerator = new RandomGradientGenerator(value);
         }
     }
     

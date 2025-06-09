@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: SnowFieldsBiom
   m_EditorClassIdentifier: 
   bottomHumidity: 0
-  topHumidity: 0
+  topHumidity: 35
   bottomTemperature: 0
-  topTemperature: 0
+  topTemperature: 35
   biomHeight: 0
+  terrainLayer: {fileID: 8574412962073106934, guid: 3b2dab59ccc72a64582b0a8286d3e9df, type: 2}

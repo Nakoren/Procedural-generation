@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro.EditorUtilities;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class TerrainConstructor : MonoBehaviour
 
     [Header("Insert here game object with generator, which you want to use")]
     [SerializeField] Generator terrainGenerator;
-    //[SerializeField] GameObject defaultTerrain;
+    [SerializeField] BiomGenerator biomGenerator;
 
     [SerializeField] bool demo;
 
@@ -26,21 +27,32 @@ public class TerrainConstructor : MonoBehaviour
     {
         TerrainData terrainData = new TerrainData();
 
-        float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x);
-        if (debugValues) DebugMap(heightMap);
-
-        terrainData.size = new Vector3(baseChunkSize, 20, baseChunkSize);
+        terrainData.size = new Vector3(baseChunkSize, height, baseChunkSize);
         terrainData.heightmapResolution = baseChunkSize;
-        terrainData.SetHeights(0, 0, heightMap);
+
+        ApplyHeights(terrainData, offset);
+        ApplyBiom(terrainData, offset);
 
         GameObject terrain = Terrain.CreateTerrainGameObject(terrainData);
-        Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, height/2, offset.y * baseChunkSize - baseChunkSize / 2);
+        Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, -height/2, offset.y * baseChunkSize - baseChunkSize / 2);
         GameObject terrainGameObject = Instantiate(terrain, terrainPosition, Quaternion.identity);
         terrainGameObject.name = $"{offset.x} {offset.y}";
         Destroy(terrain);
         ChunkController newController = terrainGameObject.AddComponent<ChunkController>();
         newController.chunkIndex = offset;
         return newController;
+    }
+
+    private void ApplyHeights(TerrainData terrainData, Vector2 offset)
+    {
+        float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x);
+        if (debugValues) DebugMap(heightMap);
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    private void ApplyBiom(TerrainData terrainData, Vector2 offset)
+    {
+        biomGenerator.ApplyBiom(terrainData, offset, baseChunkSize);
     }
 
     private void DebugMap(float[,] map)
