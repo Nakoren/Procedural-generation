@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3ba6c91b7bae744bd1ecea10cbb933, type: 3}
+  m_Name: SwampBiom
+  m_EditorClassIdentifier: 
+  bottomHumidity: 60
+  topHumidity: 100
+  bottomTemperature: 40
+  topTemperature: 60
+  biomLowFrequencyAmplitude: 0.1
+  biomMiddleFrequencyAmplitude: 0.4
+  biomHighFrequencyAmplitude: 0.2
+  terrainLayer: {fileID: 8574412962073106934, guid: 4c82f242dc166654e8d39452f7d475c5, type: 2}

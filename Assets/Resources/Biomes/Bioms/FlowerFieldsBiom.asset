@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d3ba6c91b7bae744bd1ecea10cbb933, type: 3}
-  m_Name: DesertBiom
+  m_Name: FlowerFieldsBiom
   m_EditorClassIdentifier: 
-  bottomHumidity: 0
-  topHumidity: 35
-  bottomTemperature: 65
+  bottomHumidity: 40
+  topHumidity: 60
+  bottomTemperature: 60
   topTemperature: 100
-  biomHeight: 0
-  terrainLayer: {fileID: 8574412962073106934, guid: a368ade6581fc8e4597aa019fc205fab, type: 2}
+  biomLowFrequencyAmplitude: 0
+  biomMiddleFrequencyAmplitude: 0.5
+  biomHighFrequencyAmplitude: 0.7
+  terrainLayer: {fileID: 8574412962073106934, guid: 2f142a7b9a47af64ba58579e18778fca, type: 2}

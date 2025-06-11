@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: FieldBiom
   m_EditorClassIdentifier: 
   bottomHumidity: 0
-  topHumidity: 35
-  bottomTemperature: 35
-  topTemperature: 65
-  biomHeight: 0
+  topHumidity: 40
+  bottomTemperature: 40
+  topTemperature: 60
+  biomLowFrequencyAmplitude: 0
+  biomMiddleFrequencyAmplitude: 0.5
+  biomHighFrequencyAmplitude: 0.7
   terrainLayer: {fileID: 8574412962073106934, guid: 9a80740416d327644ae2f4002c6ba943, type: 2}

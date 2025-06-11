@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3ba6c91b7bae744bd1ecea10cbb933, type: 3}
   m_Name: JungleBiom
   m_EditorClassIdentifier: 
-  bottomHumidity: 65
+  bottomHumidity: 60
   topHumidity: 100
-  bottomTemperature: 65
+  bottomTemperature: 60
   topTemperature: 100
-  biomHeight: 0
+  biomLowFrequencyAmplitude: 0.1
+  biomMiddleFrequencyAmplitude: 0.3
+  biomHighFrequencyAmplitude: 0.6
   terrainLayer: {fileID: 8574412962073106934, guid: 107e94007a5367045bdb7d3f0e022dac, type: 2}

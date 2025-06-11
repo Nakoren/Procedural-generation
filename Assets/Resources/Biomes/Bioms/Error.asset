@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d3ba6c91b7bae744bd1ecea10cbb933, type: 3}
-  m_Name: SwampBiom
+  m_Name: Error
   m_EditorClassIdentifier: 
-  bottomHumidity: 65
-  topHumidity: 100
-  bottomTemperature: 35
-  topTemperature: 65
-  biomHeight: 0
-  terrainLayer: {fileID: 8574412962073106934, guid: 4c82f242dc166654e8d39452f7d475c5, type: 2}
+  bottomHumidity: 0
+  topHumidity: 0
+  bottomTemperature: 0
+  topTemperature: 0
+  biomLowFrequencyAmplitude: 0
+  biomMiddleFrequencyAmplitude: 0
+  biomHighFrequencyAmplitude: 0
+  terrainLayer: {fileID: 8574412962073106934, guid: 49e998f0e9f361b4f96a8b9078e8b0bc, type: 2}

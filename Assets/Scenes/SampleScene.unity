@@ -173,8 +173,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc9d18b48e7abd9489db11c56b102c9a, type: 2}
   - {fileID: 11400000, guid: 24a15fbf80b58454f91830e0200bea02, type: 2}
   - {fileID: 11400000, guid: aaf53809f088a7746ab8ee96582a288d, type: 2}
-  defaultBiom: {fileID: 11400000, guid: 013780432d7f05b4ca2f58d33ac10a85, type: 2}
-  perlinNoisePeriod: 400
+  placeHolderBiom: {fileID: 11400000, guid: f26bf3bc7dc6ae5418a00ba85b4afd08, type: 2}
+  perlinNoisePeriod: 201
   biomGenerationSeed: 63545
 --- !u!1 &218145810
 GameObject:
@@ -497,9 +497,9 @@ MonoBehaviour:
   lowFrequencyPeriod: 201
   middleFrequencyPeriod: 55
   highFrequencyPeriod: 17
-  lowFrequencyAmplitude: 0.8
-  middleFrequencyAmplitude: 0.4
-  highFrequencyAmplitude: 0.2
+  defaultLowFrequencyAmplitude: 0.5
+  defaultMiddleFrequencyAmplitude: 0.3
+  defaultHighFrequencyAmplitude: 0
 --- !u!1 &945856149
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,9 +1092,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainConstructor: {fileID: 1666761979}
   observer: {fileID: 1256415028}
-  clearRange: 10
-  loadRange: 8
-  visionRange: 6
+  clearRange: 8
+  loadRange: 7
+  visionRange: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -92,15 +92,14 @@ public class TerrainController : MonoBehaviour
     private void ClearChunks()
     {
         if(m_loadedChunksList == null) { return; }
-
         for(int i=0; i<m_loadedChunksList.Count; i++)
         {
             ChunkController currentChunk = m_loadedChunksList[i];
             Vector2 chunkPosition = currentChunk.chunkIndex;
             if (Mathf.Max(Mathf.Abs(m_currentChunk.x - chunkPosition.x), Mathf.Abs(m_currentChunk.y - chunkPosition.y)) >= clearRange)
             {
-                currentChunk.DestroyChunk();
                 m_loadedChunksList.Remove(currentChunk);
+                currentChunk.DestroyChunk();
             }
         }
     }

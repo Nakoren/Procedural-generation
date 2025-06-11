@@ -9,9 +9,9 @@ public class PerlinNoiseGenerator : Generator
     [SerializeField] int middleFrequencyPeriod;
     [SerializeField] int highFrequencyPeriod;
 
-    [SerializeField] float lowFrequencyAmplitude;
-    [SerializeField] float middleFrequencyAmplitude;
-    [SerializeField] float highFrequencyAmplitude;
+    [SerializeField] float defaultLowFrequencyAmplitude;
+    [SerializeField] float defaultMiddleFrequencyAmplitude;
+    [SerializeField] float defaultHighFrequencyAmplitude;
 
     PerlinNoise m_perlinNoiseGenerator;
 
@@ -35,8 +35,7 @@ public class PerlinNoiseGenerator : Generator
         }
     }
 
-    
-    public override float[,] GenerateMatrix(int size, int xOffStep, int yOffStep)
+    public override float[,] GenerateMatrix(int size, int xOffStep, int yOffStep, BiomData[,] biomMap)
     {
         if(m_perlinNoiseGenerator == null) { Init(); }
         float[,] lowFrequencyNoise = GenerateSingleOctaveNoise(size, lowFrequencyPeriod, xOffStep, yOffStep);
@@ -48,11 +47,16 @@ public class PerlinNoiseGenerator : Generator
         {
             for (int j = 0; j < size; j++)
             {
-                summ[i, j] = lowFrequencyNoise[i, j] * lowFrequencyAmplitude + middleFrequencyNoise[i, j] * middleFrequencyAmplitude + highFrequencyNoise[i, j] * highFrequencyAmplitude;
-                //summ[i, j] = middleFrequencyNoise[i, j];
+                BiomData currentBiomData = biomMap[i, j];
+                float biomAffilation = currentBiomData.biom.GetBiomAffilation(currentBiomData);
+                float finalLowFrequency = Lerp(defaultLowFrequencyAmplitude, currentBiomData.biom.biomLowFrequencyAmplitude, biomAffilation);
+                float finalMiddleFrequency = Lerp(defaultMiddleFrequencyAmplitude, currentBiomData.biom.biomMiddleFrequencyAmplitude, biomAffilation);
+                float finalHighFrequency = Lerp(defaultHighFrequencyAmplitude, currentBiomData.biom.biomHighFrequencyAmplitude, biomAffilation);
+
+                //summ[i, j] = lowFrequencyNoise[i, j] * defaultLowFrequencyAmplitude + middleFrequencyNoise[i, j] * defaultMiddleFrequencyAmplitude + highFrequencyNoise[i, j] * defaultHighFrequencyAmplitude;
+                summ[i, j] = lowFrequencyNoise[i, j] * finalLowFrequency + middleFrequencyNoise[i, j] * finalMiddleFrequency + highFrequencyNoise[i, j] * finalHighFrequency;
             }
         }
-        //summ = Normalize(summ);
         return summ;
     }
 
@@ -73,5 +77,10 @@ public class PerlinNoiseGenerator : Generator
         }
         float[,] normalizedMatrix = NormalizeToPositive(resMatrix);
         return normalizedMatrix;
+    }
+
+    private float Lerp(float a, float b, float t)
+    {
+        return a + (b - a) * t;
     }
 }

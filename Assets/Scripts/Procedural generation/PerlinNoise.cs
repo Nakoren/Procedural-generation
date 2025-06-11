@@ -30,8 +30,6 @@ public class PerlinNoise
     {
         int halfPeriod = period / 2;
 
-        Vector2 pos = position;
-
         //Calculation of center point of point's area
         //Note: this realization uses a world separation, where center of area with index (0,0) is placed at point (0,0)
         Vector2 areaCenter;
@@ -39,11 +37,10 @@ public class PerlinNoise
         int xtAreaNum = GetChunkIndexOfValue(position.x, period);
         int ytAreaNum = GetChunkIndexOfValue(position.y, period);
 
+        //Calculating center of area where point is placed
         areaCenter = new Vector2(Mathf.Round(position.x / (period-1)) * (period - 1), Mathf.Round(position.y / (period - 1)) * (period - 1));
 
-        //areaCenter = new Vector2(Mathf.Round(position.x / m_period) * m_period, Mathf.Round(position.y / m_period) * m_period);
-
-        //Calculation of relative positions of point at the area
+        //Calculation of relative positions of point in the area
         float horizontalPositionInArea = (Mathf.Abs((areaCenter.x - halfPeriod) - position.x)) / (float)period;
         float verticalPositionInArea = (Mathf.Abs((areaCenter.y - halfPeriod) - position.y)) / (float)period;
 
@@ -83,21 +80,17 @@ public class PerlinNoise
         float result = Lerp(xBot, xTop, yQunticCurveValue);
         return result;
     }
-
     static float Dot(Vector2 a, Vector2 b)
     {
         return a.x * b.x + a.y * b.y;
     }
-
     static float Fade(float t)
     {
         return 6*Mathf.Pow(t,5) - 15 * Mathf.Pow(t, 4) + 10 * Mathf.Pow(t, 3);
     }
-
     static float Lerp(float a, float b, float t)
     {
         return a + (b - a) * t;
-        //return (b - a) * ((float)3 - t * (float)2) * t * t + a;
     }
 
     private int GetChunkIndexOfValue(float val, float step)

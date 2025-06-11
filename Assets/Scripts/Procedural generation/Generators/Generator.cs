@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Generator : MonoBehaviour
 {
     protected int m_generationSeed;
-    abstract public float[,] GenerateMatrix(int size, int xOffStep, int yOffStep);
+    abstract public float[,] GenerateMatrix(int size, int xOffStep, int yOffStep, BiomData[,] biomMap);
 
     abstract public int Seed { get; set; }
 

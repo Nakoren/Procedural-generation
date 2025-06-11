@@ -18,6 +18,8 @@ public class TerrainConstructor : MonoBehaviour
 
     [SerializeField] bool demo;
 
+    BiomData[,] m_biomMap;
+
     void Awake()
     {
         terrainGenerator.Seed = generationSeed;
@@ -30,8 +32,8 @@ public class TerrainConstructor : MonoBehaviour
         terrainData.size = new Vector3(baseChunkSize, height, baseChunkSize);
         terrainData.heightmapResolution = baseChunkSize;
 
-        ApplyHeights(terrainData, offset);
         ApplyBiom(terrainData, offset);
+        ApplyHeights(terrainData, offset);
 
         GameObject terrain = Terrain.CreateTerrainGameObject(terrainData);
         Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, -height/2, offset.y * baseChunkSize - baseChunkSize / 2);
@@ -45,14 +47,14 @@ public class TerrainConstructor : MonoBehaviour
 
     private void ApplyHeights(TerrainData terrainData, Vector2 offset)
     {
-        float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x);
+        float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x, m_biomMap);
         if (debugValues) DebugMap(heightMap);
         terrainData.SetHeights(0, 0, heightMap);
     }
 
     private void ApplyBiom(TerrainData terrainData, Vector2 offset)
     {
-        biomGenerator.ApplyBiom(terrainData, offset, baseChunkSize);
+        m_biomMap = biomGenerator.ApplyBiom(terrainData, offset, baseChunkSize);
     }
 
     private void DebugMap(float[,] map)
