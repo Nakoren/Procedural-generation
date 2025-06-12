@@ -13,6 +13,9 @@ public class PerlinNoiseGenerator : Generator
     [SerializeField] float defaultMiddleFrequencyAmplitude;
     [SerializeField] float defaultHighFrequencyAmplitude;
 
+    [Header("Defines the minimum terrainHeight in range [0,1]\nNote: if set to 0 then rivers won't generate")]
+    [SerializeField] float minTerrainHeight;
+
     PerlinNoise m_perlinNoiseGenerator;
 
     private void Awake()
@@ -53,8 +56,11 @@ public class PerlinNoiseGenerator : Generator
                 float finalMiddleFrequency = Lerp(defaultMiddleFrequencyAmplitude, currentBiomData.biom.biomMiddleFrequencyAmplitude, biomAffilation);
                 float finalHighFrequency = Lerp(defaultHighFrequencyAmplitude, currentBiomData.biom.biomHighFrequencyAmplitude, biomAffilation);
 
-                //summ[i, j] = lowFrequencyNoise[i, j] * defaultLowFrequencyAmplitude + middleFrequencyNoise[i, j] * defaultMiddleFrequencyAmplitude + highFrequencyNoise[i, j] * defaultHighFrequencyAmplitude;
-                summ[i, j] = lowFrequencyNoise[i, j] * finalLowFrequency + middleFrequencyNoise[i, j] * finalMiddleFrequency + highFrequencyNoise[i, j] * finalHighFrequency;
+                //summarizing all noises
+                float nonModifiedHeight = lowFrequencyNoise[i, j] * finalLowFrequency + middleFrequencyNoise[i, j] * finalMiddleFrequency + highFrequencyNoise[i, j] * finalHighFrequency;
+                //correcting height, so it will be normalized and placed above minimumHeight
+                float modifiedHeight = minTerrainHeight + (nonModifiedHeight * (1 - minTerrainHeight));
+                summ[i, j] = modifiedHeight;
             }
         }
         return summ;
@@ -63,18 +69,9 @@ public class PerlinNoiseGenerator : Generator
     public float[,] GenerateSingleOctaveNoise(int size, int period, int xOffSet, int yOffSet)
     {
         float[,] resMatrix = new float[size, size];
-        int halfSize = size / 2;
-        Vector2 areaCenter = new Vector2(size * xOffSet - xOffSet, size * yOffSet - yOffSet);
-        for (int x = 0; x < size; x++)
-        {
-            float temp = 0;
-            for (int y = 0; y < size; y++)
-            {
-                Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
-                temp = m_perlinNoiseGenerator.GetValueAtPoint(pointPosition, period);
-                resMatrix[x, y] = temp;
-            }
-        }
+
+        resMatrix = m_perlinNoiseGenerator.GetPerlinNoiseInArea(size, new Vector2(xOffSet, yOffSet), period);
+
         float[,] normalizedMatrix = NormalizeToPositive(resMatrix);
         return normalizedMatrix;
     }

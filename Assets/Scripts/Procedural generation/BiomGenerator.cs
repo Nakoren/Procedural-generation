@@ -37,6 +37,7 @@ public class BiomGenerator : MonoBehaviour
         get { return biomGenerationSeed; }
         set { 
             biomGenerationSeed = value; 
+            SplitBiomSeed();
         }
     }
 
@@ -47,7 +48,7 @@ public class BiomGenerator : MonoBehaviour
         m_temperaturePerlinNoise = new PerlinNoise(m_temperatureGenerationSeed);
     }
 
-    public BiomData[,] ApplyBiom(TerrainData terrainData, Vector2 offset, int size)
+    public void ApplyBiom(TerrainData terrainData, Vector2 offset, int size, out BiomData[,] resBiomData)
     {
         offset = new Vector2(offset.y, offset.x);
         Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
@@ -66,7 +67,7 @@ public class BiomGenerator : MonoBehaviour
         }
 
         ApplyBiomTextures(terrainData, size, usedBioms, biomMap);
-        return biomMap;
+        resBiomData = biomMap;
     }
 
     private BiomData[,] GetBiomMap(int size, Vector2 areaCenter)

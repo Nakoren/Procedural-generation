@@ -15,10 +15,12 @@ public class TerrainConstructor : MonoBehaviour
     [Header("Insert here game object with generator, which you want to use")]
     [SerializeField] Generator terrainGenerator;
     [SerializeField] BiomGenerator biomGenerator;
+    [SerializeField] RiverCarver riverCarver;
 
     [SerializeField] bool demo;
 
-    BiomData[,] m_biomMap;
+    BiomData[,] m_BiomDataMap;
+    Biom[,] m_biomMap;
 
     void Awake()
     {
@@ -34,6 +36,7 @@ public class TerrainConstructor : MonoBehaviour
 
         ApplyBiom(terrainData, offset);
         ApplyHeights(terrainData, offset);
+        CarveRivers(terrainData, offset);
 
         GameObject terrain = Terrain.CreateTerrainGameObject(terrainData);
         Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, -height/2, offset.y * baseChunkSize - baseChunkSize / 2);
@@ -47,14 +50,20 @@ public class TerrainConstructor : MonoBehaviour
 
     private void ApplyHeights(TerrainData terrainData, Vector2 offset)
     {
-        float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x, m_biomMap);
+        float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x, m_BiomDataMap);
         if (debugValues) DebugMap(heightMap);
         terrainData.SetHeights(0, 0, heightMap);
     }
 
     private void ApplyBiom(TerrainData terrainData, Vector2 offset)
     {
-        m_biomMap = biomGenerator.ApplyBiom(terrainData, offset, baseChunkSize);
+        biomGenerator.ApplyBiom(terrainData, offset, baseChunkSize, out m_BiomDataMap);
+        m_biomMap = Biom.ConvertTerrainDataArray(m_BiomDataMap);
+    }
+
+    private void CarveRivers(TerrainData terrainData, Vector2 offset)
+    {
+        riverCarver.CarveRivers(terrainData, offset, baseChunkSize, m_biomMap, out m_biomMap);
     }
 
     private void DebugMap(float[,] map)
