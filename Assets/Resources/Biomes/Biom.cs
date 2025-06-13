@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,6 +16,13 @@ public class Biom : ScriptableObject
     public float biomLowFrequencyAmplitude;
     public float biomMiddleFrequencyAmplitude;
     public float biomHighFrequencyAmplitude;
+
+    [Header("This parameter defines chance of vegetation spawning at random point (0 - 100):")]
+    public int vegetationSpawnChance;
+    [Header("This parameter means range at which 2 vegetations can spawn")]
+    public int vegetationIsolationRange;
+
+    public GameObject[] vegetationObjects;
 
     public TerrainLayer terrainLayer;
 
@@ -54,5 +62,20 @@ public class Biom : ScriptableObject
     {
         float radius = range / 2;
         return (radius - Mathf.Abs(center - value)) / radius;
+    }
+
+    public bool CheckPlantSpawn(int chance)
+    {
+        return chance < vegetationSpawnChance;
+    }
+
+    public GameObject GetRandomPlantAtPoint(Vector2 position, int seed)
+    {
+        if(vegetationObjects.Length == 0) return null;
+        int x = (int)position.x;
+        int y = (int)position.y;
+        int hashedVector = ((x + 1) * seed * 781) % 771 * (((x + 1) * seed * 923) % 1431) * ((x + 1) * seed ^ y);
+        Random.InitState(hashedVector);
+        return vegetationObjects[Random.Range(0,vegetationObjects.Length - 1)];
     }
 }

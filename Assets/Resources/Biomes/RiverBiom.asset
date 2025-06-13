@@ -19,4 +19,7 @@ MonoBehaviour:
   biomLowFrequencyAmplitude: 0
   biomMiddleFrequencyAmplitude: 0
   biomHighFrequencyAmplitude: 0
-  terrainLayer: {fileID: 0}
+  vegetationSpawnChance: 0
+  vegetationIsolationRange: 0
+  vegetationObjects: []
+  terrainLayer: {fileID: 8574412962073106934, guid: d7aad6faf43cecb4092fc1401e3934b9, type: 2}

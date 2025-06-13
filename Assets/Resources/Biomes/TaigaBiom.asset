@@ -19,4 +19,15 @@ MonoBehaviour:
   biomLowFrequencyAmplitude: 0.2
   biomMiddleFrequencyAmplitude: 0.5
   biomHighFrequencyAmplitude: 0.3
+  vegetationSpawnChance: 50
+  vegetationIsolationRange: 20
+  vegetationObjects:
+  - {fileID: 1210459693873458, guid: d8ebd34c38d3d0a40b5422c0fd136471, type: 3}
+  - {fileID: 192044, guid: 19682540d8a014522a319b1cf788aee2, type: 3}
+  - {fileID: 1000013472076366, guid: 3f9bc1a85199f7440a7dc65376e90332, type: 3}
+  - {fileID: 1000011750255288, guid: af9ebdc546d59e04fa5f4cf6805cc187, type: 3}
+  - {fileID: 1000011937025076, guid: 0b94787e83d06de44ab9db821c2c0142, type: 3}
+  - {fileID: 1000012936420096, guid: a6dbabfd6d3c8cb47b7243b0b8723af2, type: 3}
+  - {fileID: 1000011147454354, guid: 01d2dd5255c308a4db25dbb77d9f65ea, type: 3}
+  - {fileID: 1000011914158716, guid: 78af3a7aad589fa49b8fb946c9e57362, type: 3}
   terrainLayer: {fileID: 8574412962073106934, guid: 2a114392503d9124c8bf0d00c9eb1044, type: 2}

@@ -210,6 +210,8 @@ Transform:
   - {fileID: 1766378179}
   - {fileID: 726745340}
   - {fileID: 77903826}
+  - {fileID: 1924395174}
+  - {fileID: 563468681}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &563246345
@@ -245,6 +247,51 @@ Transform:
   - {fileID: 1987026049}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &563468680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 563468681}
+  - component: {fileID: 563468682}
+  m_Layer: 0
+  m_Name: VegetationGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &563468681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563468680}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 218145811}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &563468682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563468680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065066fa522e7e648bdd7e376edd20d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minVegetationHeight: 0.4
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +547,7 @@ MonoBehaviour:
   defaultLowFrequencyAmplitude: 0.5
   defaultMiddleFrequencyAmplitude: 0.3
   defaultHighFrequencyAmplitude: 0
+  minTerrainHeight: 0.2
 --- !u!1 &945856149
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,6 +1002,8 @@ MonoBehaviour:
   debugValues: 0
   terrainGenerator: {fileID: 726745341}
   biomGenerator: {fileID: 77903827}
+  riverCarver: {fileID: 1924395175}
+  vegetationGenerator: {fileID: 563468682}
   demo: 0
 --- !u!1 &1766378178
 GameObject:
@@ -1000,6 +1050,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scale: 5
+--- !u!1 &1924395173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1924395174}
+  - component: {fileID: 1924395175}
+  m_Layer: 0
+  m_Name: RiverCarver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1924395174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924395173}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 218145811}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1924395175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924395173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4dd75e3e4552cb479a4fb072346f593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  perlinNoisePeriod: 401
+  minRiverHeight: 0.3
+  maxRiverHeight: 0.4
+  riverRange: 0.1
+  riverBiom: {fileID: 11400000, guid: 141c685884c43e34b97cbe8b2be395b8, type: 2}
 --- !u!1 &1982659465
 GameObject:
   m_ObjectHideFlags: 0
