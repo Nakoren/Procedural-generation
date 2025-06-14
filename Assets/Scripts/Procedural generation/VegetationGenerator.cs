@@ -11,14 +11,14 @@ public class VegetationGenerator : MonoBehaviour
     private class PointData
     {
         public Vector2 position;
-        public Vector2 pointInArea;
+        public Vector2 positionInArea;
         public float value;
         public Biom biom;
 
         public PointData(Vector2 position, Vector2 pointInArea, float value, Biom biom)
         {
             this.position = position;
-            this.pointInArea = pointInArea;
+            this.positionInArea = pointInArea;
             this.value = value;
             this.biom = biom;
         }
@@ -58,7 +58,7 @@ public class VegetationGenerator : MonoBehaviour
                 }
 
                 Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
-                Biom pointBiom = biomMap[x,y];
+                Biom pointBiom = biomMap[y,x];
                 int chanceAtPoint = (int)(m_whiteNoiseGenerator.GetValueAtPoint(pointPosition) * 100);
                 
                 if (pointBiom.CheckPlantSpawn(chanceAtPoint))
@@ -86,11 +86,11 @@ public class VegetationGenerator : MonoBehaviour
 
             if (bestInSorroundings)
             {
-                Vector3 spawnPosition = new Vector3(pointData.position.x, terrainData.GetHeight((int)pointData.pointInArea.x, (int)pointData.pointInArea.y), pointData.position.y);
+                Vector3 spawnPosition = new Vector3(pointData.positionInArea.x, terrainData.GetHeight((int)pointData.positionInArea.x, (int)pointData.positionInArea.y), pointData.positionInArea.y);
                 GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, m_seed);
                 if (spawnObject == null) continue;
                 GameObject newObject = Instantiate(spawnObject, terrain.gameObject.transform);
-                newObject.transform.position = spawnPosition;
+                newObject.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);
             }
         }
     }
