@@ -6,7 +6,6 @@ public class ChunkController : MonoBehaviour
 
     public void DestroyChunk()
     {
-        //Когда разберёшься с добавлением объектов их удаление тоже тут сделай
         Destroy(this.gameObject);
     }
 }

@@ -57,7 +57,9 @@ public class PerlinNoiseGenerator : Generator
                 float finalHighFrequency = Lerp(defaultHighFrequencyAmplitude, currentBiomData.biom.biomHighFrequencyAmplitude, biomAffilation);
 
                 //summarizing all noises
-                float nonModifiedHeight = lowFrequencyNoise[i, j] * finalLowFrequency + middleFrequencyNoise[i, j] * finalMiddleFrequency + highFrequencyNoise[i, j] * finalHighFrequency;
+                float nonModifiedHeight = lowFrequencyNoise[i, j] * finalLowFrequency + 
+                    middleFrequencyNoise[i, j] * finalMiddleFrequency + 
+                    highFrequencyNoise[i, j] * finalHighFrequency;
                 //correcting height, so it will be normalized and placed above minimumHeight
                 float modifiedHeight = minTerrainHeight + (nonModifiedHeight * (1 - minTerrainHeight));
                 summ[i, j] = modifiedHeight;
@@ -69,9 +71,7 @@ public class PerlinNoiseGenerator : Generator
     public float[,] GenerateSingleOctaveNoise(int size, int period, int xOffSet, int yOffSet)
     {
         float[,] resMatrix = new float[size, size];
-
         resMatrix = m_perlinNoiseGenerator.GetPerlinNoiseInArea(size, new Vector2(xOffSet, yOffSet), period);
-
         float[,] normalizedMatrix = NormalizeToPositive(resMatrix);
         return normalizedMatrix;
     }

@@ -85,7 +85,7 @@ public class PerlinNoise
         Vector2 areaCenter;
 
         //Calculating center of area where point is placed
-        areaCenter = new Vector2(Mathf.Round(position.x / (period-1)) * (period - 1), Mathf.Round(position.y / (period - 1)) * (period - 1));
+        areaCenter = new Vector2(Mathf.Round(position.x / (period - 1)) * (period - 1), Mathf.Round(position.y / (period - 1)) * (period - 1));
 
         //Calculation of relative positions of point in the area
         float horizontalPositionInArea = (Mathf.Abs((areaCenter.x - halfPeriod) - position.x)) / (float)period;

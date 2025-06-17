@@ -10,16 +10,12 @@ public class TerrainConstructor : MonoBehaviour
     [SerializeField] public int baseChunkSize = 32;
     [SerializeField] int height = 32;
     [SerializeField] int generationSeed = 121;
-    [SerializeField] bool debugValues;
 
     [Header("Insert here game object with generator, which you want to use")]
     [SerializeField] Generator terrainGenerator;
     [SerializeField] BiomGenerator biomGenerator;
     [SerializeField] RiverCarver riverCarver;
     [SerializeField] VegetationGenerator vegetationGenerator;
-    
-
-    [SerializeField] bool demo;
 
     BiomData[,] m_biomDataMap;
     Biom[,] m_biomMap;
@@ -43,7 +39,6 @@ public class TerrainConstructor : MonoBehaviour
         ApplyHeights(terrainData, offset);
         CarveRivers(terrainData, offset);
 
-
         GameObject terrain = Terrain.CreateTerrainGameObject(terrainData);
         Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, 0, offset.y * baseChunkSize - baseChunkSize / 2);
         GameObject terrainGameObject = Instantiate(terrain, terrainPosition, Quaternion.identity);
@@ -60,7 +55,6 @@ public class TerrainConstructor : MonoBehaviour
     private void ApplyHeights(TerrainData terrainData, Vector2 offset)
     {
         float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x, m_biomDataMap);
-        if (debugValues) DebugMap(heightMap);
         terrainData.SetHeights(0, 0, heightMap);
     }
 

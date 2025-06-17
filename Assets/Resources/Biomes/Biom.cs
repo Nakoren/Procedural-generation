@@ -19,7 +19,7 @@ public class Biom : ScriptableObject
 
     [Header("This parameter defines chance of vegetation spawning at random point (0 - 100):")]
     public int vegetationSpawnChance;
-    [Header("This parameter means range at which 2 vegetations can spawn")]
+    [Header("This parameter means range at which 2 vegetations can't spawn")]
     public int vegetationIsolationRange;
 
     public GameObject[] vegetationObjects;
@@ -55,7 +55,7 @@ public class Biom : ScriptableObject
         float temperatureAffilation = GetAffilation(biomData.temperature, temperatureRange, temperatureCenter);
 
         float t = Mathf.Min(humidityAffilation, temperatureAffilation);
-        return Mathf.Pow(t,1/(float)1.1);
+        return Mathf.Pow(t,(float)1.5);
     }
 
     private float GetAffilation(float value, float range, float center)

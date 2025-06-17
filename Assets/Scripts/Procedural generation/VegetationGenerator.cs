@@ -77,7 +77,10 @@ public class VegetationGenerator : MonoBehaviour
             {
                 if (i == j) continue;
                 PointData otherPointData = dataList[j];
-                if((Vector2.Distance(pointData.position, otherPointData.position) < curBiom.vegetationIsolationRange)&&(pointData.value < otherPointData.value))
+                if(
+                    (Vector2.Distance(pointData.position, otherPointData.position) < curBiom.vegetationIsolationRange)
+                    &&
+                    (pointData.value < otherPointData.value))
                 {
                     bestInSorroundings = false;
                 }
@@ -86,7 +89,11 @@ public class VegetationGenerator : MonoBehaviour
 
             if (bestInSorroundings)
             {
-                Vector3 spawnPosition = new Vector3(pointData.positionInArea.x, terrainData.GetHeight((int)pointData.positionInArea.x, (int)pointData.positionInArea.y), pointData.positionInArea.y);
+                Vector3 spawnPosition = new Vector3(
+                    pointData.positionInArea.x, 
+                    terrainData.GetHeight((int)pointData.positionInArea.x, (int)pointData.positionInArea.y), 
+                    pointData.positionInArea.y
+                    );
                 GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, m_seed);
                 if (spawnObject == null) continue;
                 GameObject newObject = Instantiate(spawnObject, terrain.gameObject.transform);
