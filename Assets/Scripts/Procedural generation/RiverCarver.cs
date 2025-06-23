@@ -3,26 +3,21 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class RiverCarver : MonoBehaviour
+public class RiverCarver : BaseRiverCarver
 {
     [SerializeField] int perlinNoisePeriod;
-    [SerializeField] float minRiverHeight;
-    [SerializeField] float maxRiverHeight;
+    
     [Header("This parameter determines range from 0, at which values of Perlin noise river would start inflict height\n(this means that this parameter must be around 0.2)")]
     [SerializeField] float riverRange;
-
-    [SerializeField] Biom riverBiom;
-
-    private int m_seed;
     private PerlinNoise m_perlinNoiseGenerator;
 
-    public int Seed
+    public override int Seed
     {
-        get { return m_seed; }
+        get { return seed; }
         set
         {
-            m_seed = value;
-            if(m_perlinNoiseGenerator != null)
+            seed = value;
+            if (m_perlinNoiseGenerator != null)
             {
                 m_perlinNoiseGenerator.Seed = value;
             }
@@ -31,10 +26,10 @@ public class RiverCarver : MonoBehaviour
 
     private void Awake()
     {
-        m_perlinNoiseGenerator = new PerlinNoise(m_seed);
+        m_perlinNoiseGenerator = new PerlinNoise(seed);
     }
 
-    public void CarveRivers(TerrainData terrainData, Vector2 offset, int size, Biom[,] biomMap, out Biom[,] updateBiomMap)
+    public override void CarveRivers(TerrainData terrainData, Vector2 offset, int size, Biom[,] biomMap, out Biom[,] updateBiomMap)
     {
         offset = new Vector2(offset.y, offset.x);
 

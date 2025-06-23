@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Generator : MonoBehaviour
+public abstract class BaseTerrainGenerator : MonoBehaviour
 {
     protected int m_generationSeed;
     abstract public float[,] GenerateMatrix(int size, int xOffStep, int yOffStep, BiomData[,] biomMap);

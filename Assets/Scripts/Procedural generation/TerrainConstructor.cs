@@ -9,23 +9,28 @@ public class TerrainConstructor : MonoBehaviour
 {
     [SerializeField] public int baseChunkSize = 32;
     [SerializeField] int height = 32;
+    [Header("Set \"Single seed to use uniform seed for all generators\"")]
+    [SerializeField] public bool singleSeed;
     [SerializeField] int generationSeed = 121;
 
     [Header("Insert here game object with generator, which you want to use")]
-    [SerializeField] Generator terrainGenerator;
-    [SerializeField] BiomGenerator biomGenerator;
-    [SerializeField] RiverCarver riverCarver;
-    [SerializeField] VegetationGenerator vegetationGenerator;
+    [SerializeField] BaseTerrainGenerator terrainGenerator;
+    [SerializeField] BaseBiomGenerator biomGenerator;
+    [SerializeField] BaseRiverCarver riverCarver;
+    [SerializeField] BaseVegetationGenerator vegetationGenerator;
 
     BiomData[,] m_biomDataMap;
     Biom[,] m_biomMap;
 
     void Awake()
     {
-        terrainGenerator.Seed = generationSeed;
-        //biomGenerator.Seed = generationSeed;
-        riverCarver.Seed = generationSeed;
-        vegetationGenerator.Seed = generationSeed;
+        if (singleSeed)
+        {
+            terrainGenerator.Seed = generationSeed;
+            biomGenerator.Seed = generationSeed;
+            riverCarver.Seed = generationSeed;
+            vegetationGenerator.Seed = generationSeed;
+        }
     }
 
     public ChunkController ConstructTerrain(Vector2 offset)

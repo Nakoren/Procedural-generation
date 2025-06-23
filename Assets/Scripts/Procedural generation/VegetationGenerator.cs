@@ -4,10 +4,8 @@ using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VegetationGenerator : MonoBehaviour
+public class VegetationGenerator : BaseVegetationGenerator
 {
-    [SerializeField] float minVegetationHeight;
-
     private class PointData
     {
         public Vector2 position;
@@ -24,14 +22,14 @@ public class VegetationGenerator : MonoBehaviour
         }
     }
 
-    private int m_seed;
+    
     private WhiteNoise m_whiteNoiseGenerator;
 
-    public int Seed
+    public override int Seed
     {
-        get { return m_seed; }
+        get { return seed; }
         set { 
-            m_seed = value;
+            seed = value;
             if(m_whiteNoiseGenerator != null) m_whiteNoiseGenerator.Seed = value;
         }
     }
@@ -40,7 +38,7 @@ public class VegetationGenerator : MonoBehaviour
         m_whiteNoiseGenerator = new WhiteNoise();
     }
 
-    public void ApplyVegetation(Terrain terrain, Vector2 offset, int size, Biom[,] biomMap)
+    public override void ApplyVegetation(Terrain terrain, Vector2 offset, int size, Biom[,] biomMap)
     {
         TerrainData terrainData = terrain.terrainData;
         Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
@@ -94,7 +92,7 @@ public class VegetationGenerator : MonoBehaviour
                     terrainData.GetHeight((int)pointData.positionInArea.x, (int)pointData.positionInArea.y), 
                     pointData.positionInArea.y
                     );
-                GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, m_seed);
+                GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, seed);
                 if (spawnObject == null) continue;
                 GameObject newObject = Instantiate(spawnObject, terrain.gameObject.transform);
                 newObject.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);

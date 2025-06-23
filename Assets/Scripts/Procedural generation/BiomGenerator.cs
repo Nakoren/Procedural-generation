@@ -18,13 +18,10 @@ public class BiomData
     }
 }
 
-public class BiomGenerator : MonoBehaviour
+public class BiomGenerator : BaseBiomGenerator
 {
-    [SerializeField] Biom[] biomsList;
-    [SerializeField] Biom placeHolderBiom;
-
     [SerializeField] int perlinNoisePeriod;
-    [SerializeField] int biomGenerationSeed;
+    
 
     int m_humidityGenerationSeed;
     int m_temperatureGenerationSeed;
@@ -32,7 +29,7 @@ public class BiomGenerator : MonoBehaviour
     private PerlinNoise m_humidityPerlinNoise;
     private PerlinNoise m_temperaturePerlinNoise;
 
-    public int Seed
+    override public int Seed
     {
         get { return biomGenerationSeed; }
         set { 
@@ -48,7 +45,7 @@ public class BiomGenerator : MonoBehaviour
         m_temperaturePerlinNoise = new PerlinNoise(m_temperatureGenerationSeed);
     }
 
-    public void ApplyBiom(TerrainData terrainData, Vector2 offset, int size, out BiomData[,] resBiomData)
+    public override void ApplyBiom(TerrainData terrainData, Vector2 offset, int size, out BiomData[,] resBiomData)
     {
         offset = new Vector2(offset.y, offset.x);
         Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);

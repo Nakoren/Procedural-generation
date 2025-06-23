@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 
 //This generator creates a big-sized chunk using Diamond-Square algorithm. It is not usable for infinite generation
-public class DiamondSquareGenerator : Generator
+public class DiamondSquareGenerator : BaseTerrainGenerator
 {
     [SerializeField] private float generationRoughness;
     [SerializeField] private int BreakInterval;

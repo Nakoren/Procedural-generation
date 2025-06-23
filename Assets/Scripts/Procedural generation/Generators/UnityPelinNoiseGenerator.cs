@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TerrainGenerator : Generator
+public class TerrainGenerator : BaseTerrainGenerator
 {
     public float scale = 1f;
 

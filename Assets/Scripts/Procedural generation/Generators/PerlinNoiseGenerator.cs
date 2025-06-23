@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PerlinNoiseGenerator : Generator
+public class PerlinNoiseGenerator : BaseTerrainGenerator
 { 
     [SerializeField] int lowFrequencyPeriod;
     [SerializeField] int middleFrequencyPeriod;
