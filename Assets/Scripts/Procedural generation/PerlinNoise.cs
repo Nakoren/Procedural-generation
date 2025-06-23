@@ -41,6 +41,7 @@ public class PerlinNoise
                 noise[x, y] = GetValueAtPoint(pointPosition, period);
             }
         }
+        m_gradientGenerator.ResetCash();
         return noise;
     }
     public float[,] GetMultiActaveNoiseInArea(int size, Vector2 offset, int minPeriod, int octaves)
