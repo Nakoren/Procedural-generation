@@ -35,7 +35,7 @@ public class VegetationGenerator : BaseVegetationGenerator
     }
     private void Awake()
     {
-        m_whiteNoiseGenerator = new WhiteNoise();
+        m_whiteNoiseGenerator = new WhiteNoise(seed);
     }
 
     public override void ApplyVegetation(Terrain terrain, Vector2 offset, int size, Biom[,] biomMap)

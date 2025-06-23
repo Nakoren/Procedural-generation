@@ -4,6 +4,11 @@ public class WhiteNoise
 {
     int m_seed;
     
+    public WhiteNoise(int seed)
+    {
+        m_seed = seed;
+    }
+
     public int Seed
     {
         get { return m_seed; }
@@ -28,7 +33,7 @@ public class WhiteNoise
     {
         int x = (int)position.x;
         int y = (int)position.y;
-        int hashVector = (((x + 1) * 717) % 7443 * (m_seed * 478) % 3415) + ((x + 1) * m_seed ^ y) + (((y + 1) * 1328) % 861 * (m_seed * 451) % 441);
+        int hashVector = (((x + 1) * 717) % 7443 * (m_seed + 1 * 478) % 3415) + ((x + 1) * m_seed + 1 ^ y) + (((y + 1) * 1328) % 861 * (m_seed + 1 * 451) % 441);
         Random.InitState(hashVector);
         float value = Random.Range(0, 100)/(float)100;
         return value;
