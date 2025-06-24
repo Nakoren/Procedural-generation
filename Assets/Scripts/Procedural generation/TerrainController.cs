@@ -6,7 +6,6 @@ using UnityEngine;
 public class TerrainController : MonoBehaviour
 {
     [SerializeField] TerrainConstructor terrainConstructor;
-    [SerializeField] Observer observer;
     [Header("Range outside which chunks will be deleted")]
     [SerializeField] int clearRange;
     [Header("Range which determines a loading distance for chunks during expansion")]
@@ -23,9 +22,8 @@ public class TerrainController : MonoBehaviour
     private void Start()
     {
         m_chunkSize = terrainConstructor.baseChunkSize;
-        observer.onPositionChange += OnPlayerMove;
 
-        Vector3 defaultObserverPosition = observer.transform.position;
+        Vector3 defaultObserverPosition = Vector3.zero;
         m_currentChunk = new Vector2(defaultObserverPosition.x, defaultObserverPosition.z);
 
         UpdateChunks();

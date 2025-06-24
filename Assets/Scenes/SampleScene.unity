@@ -174,8 +174,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 24a15fbf80b58454f91830e0200bea02, type: 2}
   - {fileID: 11400000, guid: aaf53809f088a7746ab8ee96582a288d, type: 2}
   placeHolderBiom: {fileID: 11400000, guid: f26bf3bc7dc6ae5418a00ba85b4afd08, type: 2}
-  perlinNoisePeriod: 201
   biomGenerationSeed: 63545
+  perlinNoisePeriod: 201
 --- !u!1 &218145810
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 065066fa522e7e648bdd7e376edd20d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  seed: 7117
   minVegetationHeight: 0.4
 --- !u!1 &705507993
 GameObject:
@@ -890,6 +891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseChunkSize: 33
   height: 40
+  singleSeed: 0
   generationSeed: 20
   terrainGenerator: {fileID: 726745341}
   biomGenerator: {fileID: 77903827}
@@ -984,11 +986,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4dd75e3e4552cb479a4fb072346f593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  perlinNoisePeriod: 401
   minRiverHeight: 0.3
   maxRiverHeight: 0.4
-  riverRange: 0.1
   riverBiom: {fileID: 11400000, guid: 141c685884c43e34b97cbe8b2be395b8, type: 2}
+  seed: 534
+  perlinNoisePeriod: 401
+  riverRange: 0.1
 --- !u!1 &1982659465
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class Observer : MonoBehaviour
 {
     [SerializeField] int speed = 10;
     [SerializeField] int cameraSensitivity = 10;
+    [SerializeField] TerrainController terrainController;
 
     private CharacterController m_characterController;
 
@@ -21,6 +22,8 @@ public class Observer : MonoBehaviour
      private void Start()
     {
         m_characterController = GetComponent<CharacterController>();
+        onPositionChange += terrainController.OnPlayerMove;
+        onPositionChange.Invoke(transform.position);
     }
 
     public void RotateCamera(Vector2 rotatingVector)
