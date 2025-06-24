@@ -9,8 +9,8 @@ public class TerrainConstructor : MonoBehaviour
 {
     [SerializeField] public int baseChunkSize = 32;
     [SerializeField] int height = 32;
-    [Header("Set \"Single seed to use uniform seed for all generators\"")]
-    [SerializeField] public bool singleSeed;
+    [Header("Set \"Uniform seed\" to use single seed for all generators")]
+    [SerializeField] public bool uniformSeed;
     [SerializeField] int generationSeed = 121;
 
     [Header("Insert here game object with generator, which you want to use")]
@@ -24,7 +24,7 @@ public class TerrainConstructor : MonoBehaviour
 
     void Awake()
     {
-        if (singleSeed)
+        if (uniformSeed)
         {
             terrainGenerator.Seed = generationSeed;
             biomGenerator.Seed = generationSeed;

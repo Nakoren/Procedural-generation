@@ -19,7 +19,7 @@ public class Biom : ScriptableObject
 
     [Header("This parameter defines chance of vegetation spawning at random point (0 - 100):")]
     public int vegetationSpawnChance;
-    [Header("This parameter means range at which 2 vegetations can't spawn")]
+    [Header("This parameter means range at which 2 vegetations can inflict each other")]
     public int vegetationIsolationRange;
 
     public GameObject[] vegetationObjects;

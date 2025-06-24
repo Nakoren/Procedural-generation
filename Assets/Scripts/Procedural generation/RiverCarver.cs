@@ -41,7 +41,7 @@ public class RiverCarver : BaseRiverCarver
         {
             for(int y=0;y<size; y++)
             {
-                float absolutePerlin = Mathf.Abs(riverPerlinNoise[x, y] * 2);
+                float absolutePerlin = Mathf.Abs(riverPerlinNoise[x, y]);
                 float pointAffilation = Mathf.Max(0,1 - absolutePerlin/riverRange);
                 riverAffilationMap[x,y] = pointAffilation;
             }

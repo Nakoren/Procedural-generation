@@ -81,8 +81,10 @@ public class VegetationGenerator : BaseVegetationGenerator
                     (pointData.value < otherPointData.value))
                 {
                     bestInSorroundings = false;
+                    dataList.Remove(pointData);
+                    i--;
+                    break;
                 }
-                if (!bestInSorroundings) break;
             }
 
             if (bestInSorroundings)
