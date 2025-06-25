@@ -65,25 +65,23 @@ public class VegetationGenerator : BaseVegetationGenerator
                 }
             }
         }
+
         for (int i = 0; i < dataList.Count; i++)
         {
             PointData pointData = dataList[i];
             Biom curBiom = pointData.biom;
 
+            float[,] sorroundingNoise = m_whiteNoiseGenerator.GetNoiseInArea(pointData.position, pointData.biom.vegetationIsolationRange);
+
             bool bestInSorroundings = true;
-            for (int j=0; j < dataList.Count; j++)
+            for(int ni = 0; ni < sorroundingNoise.GetLength(0); ni++)
             {
-                if (i == j) continue;
-                PointData otherPointData = dataList[j];
-                if(
-                    (Vector2.Distance(pointData.position, otherPointData.position) < curBiom.vegetationIsolationRange)
-                    &&
-                    (pointData.value < otherPointData.value))
+                for (int nj = 0; nj < sorroundingNoise.GetLength(1); nj++)
                 {
-                    bestInSorroundings = false;
-                    dataList.Remove(pointData);
-                    i--;
-                    break;
+                    if (sorroundingNoise[ni, nj] < pointData.value)
+                    {
+                        bestInSorroundings = false;
+                    }
                 }
             }
 
