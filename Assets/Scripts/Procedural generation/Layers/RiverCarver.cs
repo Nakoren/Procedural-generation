@@ -75,7 +75,7 @@ public class RiverCarver : BaseRiverCarver
                 float newHeight = pointHeight + (minRiverHeight - pointHeight) * pointAffilation;
                 newChunkHeights[x, y] = newHeight;
 
-                if (newHeight <= maxRiverHeight)
+                if (newHeight <= m_maxRiverHeight)
                 {
                     biomMap[x, y] = riverBiom;
                     for (int i = 0; i < terrainLayersCount; i++)

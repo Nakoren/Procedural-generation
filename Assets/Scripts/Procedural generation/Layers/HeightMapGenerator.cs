@@ -14,8 +14,7 @@ public class HeightMapGenerator : BaseTerrainGenerator
     [SerializeField] float defaultHighFrequencyAmplitude;
 
     [Header("Defines the minimum terrainHeight in range [0,1]\nNote: if set to 0 then rivers won't generate")]
-    [SerializeField] float minTerrainHeight;
-
+    
     PerlinNoise m_perlinNoiseGenerator;
 
     private void Awake()
@@ -25,15 +24,15 @@ public class HeightMapGenerator : BaseTerrainGenerator
 
     private void Init()
     {
-        m_perlinNoiseGenerator = new PerlinNoise(m_generationSeed);
+        m_perlinNoiseGenerator = new PerlinNoise(seed);
     }
 
     override public int Seed
     {
-        get { return m_generationSeed; }
+        get { return seed; }
         set
         {
-            m_generationSeed = value;
+            seed = value;
             m_perlinNoiseGenerator.Seed = value;
         }
     }

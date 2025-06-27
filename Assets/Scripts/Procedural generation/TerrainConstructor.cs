@@ -18,6 +18,8 @@ public class TerrainConstructor : MonoBehaviour
     [SerializeField] BaseBiomGenerator biomGenerator;
     [SerializeField] BaseRiverCarver riverCarver;
     [SerializeField] BaseVegetationGenerator vegetationGenerator;
+    
+    [SerializeField] Transform terrainContainer;
 
     BiomData[,] m_biomDataMap;
     Biom[,] m_biomMap;
@@ -30,6 +32,11 @@ public class TerrainConstructor : MonoBehaviour
             biomGenerator.Seed = generationSeed;
             riverCarver.Seed = generationSeed;
             vegetationGenerator.Seed = generationSeed;
+        }
+
+        if ((terrainGenerator !=null) && (riverCarver != null))
+        {
+            riverCarver.MaxRiverHeight = terrainGenerator.MinTerrainHeight;
         }
     }
 
@@ -47,6 +54,7 @@ public class TerrainConstructor : MonoBehaviour
         GameObject terrain = Terrain.CreateTerrainGameObject(terrainData);
         Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, 0, offset.y * baseChunkSize - baseChunkSize / 2);
         GameObject terrainGameObject = Instantiate(terrain, terrainPosition, Quaternion.identity);
+        terrainGameObject.transform.parent = terrainContainer;
         terrainGameObject.name = $"{offset.x} {offset.y}";
         Destroy(terrain);
 

@@ -50,10 +50,6 @@ public class VegetationGenerator : BaseVegetationGenerator
         {
             for(int y = 0; y < size; y++)
             {
-                if (terrainHeights[x,y] <= minVegetationHeight)
-                {
-                    continue;
-                }
 
                 Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
                 Biom pointBiom = biomMap[y,x];

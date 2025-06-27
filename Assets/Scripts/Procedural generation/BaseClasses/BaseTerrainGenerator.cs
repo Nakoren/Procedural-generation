@@ -4,24 +4,18 @@ using UnityEngine;
 
 public abstract class BaseTerrainGenerator : MonoBehaviour
 {
+    [SerializeField] protected int seed;
+    [SerializeField] protected float minTerrainHeight;
 
-    protected int m_generationSeed;
+    public float MinTerrainHeight
+    {
+        set { minTerrainHeight = value; }
+        get { return minTerrainHeight; }
+    }
+
     abstract public float[,] GenerateMatrix(int size, int xOffStep, int yOffStep, BiomData[,] biomMap);
 
     abstract public int Seed { get; set; }
-
-    public static int SetNumTo2Pow(int num)
-    {
-        int curNum = 1;
-        while (curNum < num)
-        {
-            curNum *= 2;
-            if (curNum >= num) break;
-        }
-        curNum++;
-        if (curNum > num) Debug.Log("Warning: default size was set to power of 2 plus 1");
-        return curNum;
-    }
 
     protected float[,] NormalizeToPositive(float[,] source)
     {

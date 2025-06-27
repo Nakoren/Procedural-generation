@@ -3,7 +3,6 @@ using UnityEngine;
 public abstract class BaseVegetationGenerator : MonoBehaviour
 {
     [SerializeField] protected int seed;
-    [SerializeField] protected float minVegetationHeight;
 
     public virtual int Seed
     {
