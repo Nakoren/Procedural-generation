@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public abstract class BaseBiomGenerator : MonoBehaviour
+public abstract class BaseBiomGenerator : TerrainLayer
 {
     [SerializeField] protected Biom[] biomsList;
     [SerializeField] protected Biom placeHolderBiom;
     [SerializeField] protected int biomGenerationSeed;
 
-    public virtual int Seed
+    public override int Seed
     {
         get { return biomGenerationSeed; }
         set
@@ -14,6 +14,4 @@ public abstract class BaseBiomGenerator : MonoBehaviour
             biomGenerationSeed = value;
         }
     }
-
-    public abstract void ApplyBiom(TerrainData terrainData, Vector2 offset, int size, out BiomData[,] resBiomData);
 }

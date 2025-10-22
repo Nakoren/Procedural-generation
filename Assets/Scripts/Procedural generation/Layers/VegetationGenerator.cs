@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CreateAssetMenu(fileName = "DefaultBegetationLayer", menuName = "TerrainLayers/DefaultVegetationLayer")]
 public class VegetationGenerator : BaseVegetationGenerator
 {
     private class PointData
@@ -27,20 +28,23 @@ public class VegetationGenerator : BaseVegetationGenerator
 
     public override int Seed
     {
-        get { return seed; }
+        get { return m_seed; }
         set { 
-            seed = value;
+            m_seed = value;
             if(m_whiteNoiseGenerator != null) m_whiteNoiseGenerator.Seed = value;
         }
     }
     private void Awake()
     {
-        m_whiteNoiseGenerator = new WhiteNoise(seed);
+        m_whiteNoiseGenerator = new WhiteNoise(m_seed);
     }
 
-    public override void ApplyVegetation(Terrain terrain, Vector2 offset, int size, Biom[,] biomMap)
+    public override void ApplyLayer(ChunkData chunkData)
     {
-        TerrainData terrainData = terrain.terrainData;
+        TerrainData terrainData = chunkData.terrain.terrainData;
+        int size = chunkData.size;
+        Vector2 offset = chunkData.offset;
+
         Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
         int halfSize = size / 2;
         float[,] terrainHeights = terrainData.GetHeights(0, 0, size, size);
@@ -52,7 +56,7 @@ public class VegetationGenerator : BaseVegetationGenerator
             {
 
                 Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
-                Biom pointBiom = biomMap[y,x];
+                Biom pointBiom = chunkData.biomMap[y,x].biom;
                 int chanceAtPoint = (int)(m_whiteNoiseGenerator.GetValueAtPoint(pointPosition) * 100);
                 
                 if (pointBiom.CheckPlantSpawn(chanceAtPoint))
@@ -88,9 +92,9 @@ public class VegetationGenerator : BaseVegetationGenerator
                     terrainData.GetHeight((int)pointData.positionInArea.x, (int)pointData.positionInArea.y), 
                     pointData.positionInArea.y
                     );
-                GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, seed);
+                GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, m_seed);
                 if (spawnObject == null) continue;
-                GameObject newObject = Instantiate(spawnObject, terrain.gameObject.transform);
+                GameObject newObject = Instantiate(spawnObject, chunkData.terrain.gameObject.transform);
                 newObject.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);
             }
         }

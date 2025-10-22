@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[CreateAssetMenu(fileName = "DefaultHeightMapGenerator", menuName = "TerrainLayers/DefaultHeightMapLayer")]
 public class HeightMapGenerator : BaseTerrainGenerator
 { 
     [SerializeField] int lowFrequencyPeriod;
@@ -24,21 +25,26 @@ public class HeightMapGenerator : BaseTerrainGenerator
 
     private void Init()
     {
-        m_perlinNoiseGenerator = new PerlinNoise(seed);
+        m_perlinNoiseGenerator = new PerlinNoise(m_seed);
     }
 
     override public int Seed
     {
-        get { return seed; }
+        get { return m_seed; }
         set
         {
-            seed = value;
+            m_seed = value;
             m_perlinNoiseGenerator.Seed = value;
         }
     }
 
-    public override float[,] GenerateMatrix(int size, int xOffStep, int yOffStep, BiomData[,] biomMap)
+    public override void ApplyLayer(ChunkData chunkData)
     {
+        int size = chunkData.size;
+        int xOffStep = (int)chunkData.offset.x;
+        int yOffStep = (int)chunkData.offset.y;
+
+
         if(m_perlinNoiseGenerator == null) { Init(); }
         float[,] lowFrequencyNoise = GenerateSingleOctaveNoise(size, lowFrequencyPeriod, xOffStep, yOffStep);
         float[,] middleFrequencyNoise = GenerateSingleOctaveNoise(size, middleFrequencyPeriod, xOffStep, yOffStep);
@@ -49,7 +55,7 @@ public class HeightMapGenerator : BaseTerrainGenerator
         {
             for (int j = 0; j < size; j++)
             {
-                BiomData currentBiomData = biomMap[i, j];
+                BiomData currentBiomData = chunkData.biomMap[i, j];
                 float biomAffilation = currentBiomData.biom.GetBiomAffilation(currentBiomData);
                 float finalLowFrequency = Lerp(defaultLowFrequencyAmplitude, currentBiomData.biom.biomLowFrequencyAmplitude, biomAffilation);
                 float finalMiddleFrequency = Lerp(defaultMiddleFrequencyAmplitude, currentBiomData.biom.biomMiddleFrequencyAmplitude, biomAffilation);
@@ -64,7 +70,6 @@ public class HeightMapGenerator : BaseTerrainGenerator
                 summ[i, j] = modifiedHeight;
             }
         }
-        return summ;
     }
 
     public float[,] GenerateSingleOctaveNoise(int size, int period, int xOffSet, int yOffSet)

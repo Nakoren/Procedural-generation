@@ -24,7 +24,7 @@ public class Biom : ScriptableObject
 
     public GameObject[] vegetationObjects;
 
-    public TerrainLayer terrainLayer;
+    public UnityEngine.TerrainLayer terrainLayer;
 
     static public Biom[,] ConvertTerrainDataArray(BiomData[,] data)
     {

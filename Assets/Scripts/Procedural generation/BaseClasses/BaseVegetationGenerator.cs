@@ -1,18 +1,15 @@
 using UnityEngine;
 
-public abstract class BaseVegetationGenerator : MonoBehaviour
+public abstract class BaseVegetationGenerator : TerrainLayer
 {
-    [SerializeField] protected int seed;
 
     public virtual int Seed
     {
-        get { return seed; }
+        get { return m_seed; }
         set
         {
-            seed = value;
+            m_seed = value;
         }
     }
-
-    public abstract void ApplyVegetation(Terrain terrain, Vector2 offset, int size, Biom[,] biomMap);
 
 }

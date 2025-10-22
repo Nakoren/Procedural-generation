@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DefaultRiverGenerator", menuName = "TerrainLayers/DefaultRiverLayer")]
 public class RiverCarver : BaseRiverCarver
 {
     [SerializeField] int perlinNoisePeriod;
@@ -13,10 +14,10 @@ public class RiverCarver : BaseRiverCarver
 
     public override int Seed
     {
-        get { return seed; }
+        get { return m_seed; }
         set
         {
-            seed = value;
+            m_seed = value;
             if (m_perlinNoiseGenerator != null)
             {
                 m_perlinNoiseGenerator.Seed = value;
@@ -26,35 +27,37 @@ public class RiverCarver : BaseRiverCarver
 
     private void Awake()
     {
-        m_perlinNoiseGenerator = new PerlinNoise(seed);
+        m_perlinNoiseGenerator = new PerlinNoise(m_seed);
     }
 
-    public override void CarveRivers(TerrainData terrainData, Vector2 offset, int size, Biom[,] biomMap, out Biom[,] updateBiomMap)
+    public override void ApplyLayer(ChunkData chunkData)
     {
-        offset = new Vector2(offset.y, offset.x);
+        Vector2 offset = new Vector2(chunkData.offset.y, chunkData.offset.x);
 
-        float[,] riverPerlinNoise = new float[size, size];
-        riverPerlinNoise = m_perlinNoiseGenerator.GetPerlinNoiseInArea(size, offset, perlinNoisePeriod);
+        float[,] riverPerlinNoise = new float[chunkData.size, chunkData.size];
+        riverPerlinNoise = m_perlinNoiseGenerator.GetPerlinNoiseInArea(chunkData.size, offset, perlinNoisePeriod);
 
-        float[,] riverAffilationMap = new float[size, size];
-        for(int x=0;x<size; x++)
+        float[,] riverAffilationMap = new float[chunkData.size, chunkData.size];
+        for(int x=0;x< chunkData.size; x++)
         {
-            for(int y=0;y<size; y++)
+            for(int y=0;y< chunkData.size; y++)
             {
                 float absolutePerlin = Mathf.Abs(riverPerlinNoise[x, y]);
                 float pointAffilation = Mathf.Max(0,1 - absolutePerlin/riverRange);
                 riverAffilationMap[x,y] = pointAffilation;
             }
         }
-        ApplyRivers(terrainData, size, riverAffilationMap, biomMap, out updateBiomMap);
+        ApplyRivers(chunkData, riverAffilationMap);
     }
-    private void ApplyRivers(TerrainData terrainData, int size, float[,] riverAffilationMap, Biom[,] biomMap, out Biom[,] updateBiomMap)
+    private void ApplyRivers(ChunkData chunkData, float[,] riverAffilationMap)
     {
-        float[,] newChunkHeights = new float[size, size];
+        TerrainData terrainData = chunkData.terrain.terrainData;
+
+        float[,] newChunkHeights = new float[chunkData.size, chunkData.size];
 
         int terrainLayersCount = terrainData.terrainLayers.Length;
 
-        TerrainLayer[] tempContainer = new TerrainLayer[terrainLayersCount+1]; 
+        UnityEngine.TerrainLayer[] tempContainer = new UnityEngine.TerrainLayer[terrainLayersCount + 1]; 
         for(int i = 0; i < terrainLayersCount; i++)
         {
             tempContainer[i] = terrainData.terrainLayers[i];
@@ -62,12 +65,12 @@ public class RiverCarver : BaseRiverCarver
         tempContainer[terrainLayersCount] = riverBiom.terrainLayer;
         terrainData.terrainLayers = tempContainer;
 
-        float[,] terrainHeightMap = terrainData.GetHeights(0, 0, size, size);
-        float[,,] alphaMaps = terrainData.GetAlphamaps(0, 0, size, size);
+        float[,] terrainHeightMap = terrainData.GetHeights(0, 0, chunkData.size, chunkData.size);
+        float[,,] alphaMaps = terrainData.GetAlphamaps(0, 0, chunkData.size, chunkData.size);
 
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x < chunkData.size; x++)
         {
-            for (int y = 0; y < size; y++)
+            for (int y = 0; y < chunkData.size; y++)
             {
                 float pointAffilation = riverAffilationMap[x, y];
                 if (pointAffilation < 0) continue;
@@ -77,7 +80,7 @@ public class RiverCarver : BaseRiverCarver
 
                 if (newHeight <= m_maxRiverHeight)
                 {
-                    biomMap[x, y] = riverBiom;
+                    chunkData.biomMap[x, y] = new BiomData(riverBiom, 0, 0);
                     for (int i = 0; i < terrainLayersCount; i++)
                     {
                         alphaMaps[x, y, i] = 0;
@@ -88,6 +91,5 @@ public class RiverCarver : BaseRiverCarver
         }
         terrainData.SetAlphamaps(0, 0, alphaMaps);
         terrainData.SetHeights(0, 0, newChunkHeights);
-        updateBiomMap = biomMap;
     }
 }

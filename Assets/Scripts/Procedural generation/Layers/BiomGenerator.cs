@@ -4,6 +4,7 @@ using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DefaultBiomLayer", menuName = "TerrainLayers/DefaultBiomLayer")]
 public class BiomData
 {
     public Biom biom;
@@ -45,8 +46,12 @@ public class BiomGenerator : BaseBiomGenerator
         m_temperaturePerlinNoise = new PerlinNoise(m_temperatureGenerationSeed);
     }
 
-    public override void ApplyBiom(TerrainData terrainData, Vector2 offset, int size, out BiomData[,] resBiomData)
+    public override void ApplyLayer(ChunkData chunkData)
     {
+        Vector2 offset = chunkData.offset;
+        int size = chunkData.size;
+
+
         offset = new Vector2(offset.y, offset.x);
         Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
         BiomData[,] biomMap = GetBiomMap(size, areaCenter);
@@ -63,8 +68,7 @@ public class BiomGenerator : BaseBiomGenerator
             }
         }
 
-        ApplyBiomTextures(terrainData, size, usedBioms, biomMap);
-        resBiomData = biomMap;
+        ApplyBiomTextures(chunkData.terrain.terrainData, size, usedBioms, biomMap);
     }
 
     private BiomData[,] GetBiomMap(int size, Vector2 areaCenter)
@@ -106,7 +110,7 @@ public class BiomGenerator : BaseBiomGenerator
     }
 
     private void ApplyBiomTextures(TerrainData terrainData, int size, List<Biom> usedBioms, BiomData[,] biomMap) {
-        List<TerrainLayer> layerList = new List<TerrainLayer>();
+        List<UnityEngine.TerrainLayer> layerList = new List<UnityEngine.TerrainLayer>();
         foreach (Biom biom in usedBioms)
         {
             layerList.Add(biom.terrainLayer);

@@ -1,22 +1,20 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class BaseRiverCarver : MonoBehaviour
+public abstract class BaseRiverCarver : TerrainLayer
 {
     [SerializeField] protected float minRiverHeight;
 
     [SerializeField] protected Biom riverBiom;
 
-    [SerializeField] protected int seed;
-
     protected float m_maxRiverHeight;
 
-    public virtual int Seed
+    public override int Seed
     {
-        get { return seed; }
+        get { return m_seed; }
         set
         {
-            seed = value;
+            m_seed = value;
         }
     }
 
@@ -27,7 +25,4 @@ public abstract class BaseRiverCarver : MonoBehaviour
         } 
         get { return m_maxRiverHeight; }
     }
-
-
-    public abstract void CarveRivers(TerrainData terrainData, Vector2 offset, int size, Biom[,] biomMap, out Biom[,] updateBiomMap);
 }

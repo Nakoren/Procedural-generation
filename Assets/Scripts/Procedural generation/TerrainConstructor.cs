@@ -5,7 +5,8 @@ using TMPro.EditorUtilities;
 using UnityEngine;
 
 //This class constructs a terrain
-public class TerrainConstructor : MonoBehaviour
+[CreateAssetMenu(fileName = "TerrainConstructor", menuName = "TerrainConstructor")]
+public class TerrainConstructor : ScriptableObject
 {
     [SerializeField] public int baseChunkSize = 32;
     [SerializeField] int height = 32;
@@ -13,30 +14,21 @@ public class TerrainConstructor : MonoBehaviour
     [SerializeField] public bool uniformSeed;
     [SerializeField] int generationSeed = 121;
 
-    [Header("Insert here game object with generator, which you want to use")]
-    [SerializeField] BaseTerrainGenerator terrainGenerator;
-    [SerializeField] BaseBiomGenerator biomGenerator;
-    [SerializeField] BaseRiverCarver riverCarver;
-    [SerializeField] BaseVegetationGenerator vegetationGenerator;
-    
-    [SerializeField] Transform terrainContainer;
+    [Header("Insert here TerrainLayers, which you want to use")]
+    [SerializeField] public TerrainLayer[] TerrainLayers;
 
-    BiomData[,] m_biomDataMap;
-    Biom[,] m_biomMap;
+    GameObject m_terrainContainer;
 
     void Awake()
     {
-        if (uniformSeed)
+        if (uniformSeed) 
+            foreach (TerrainLayer layer in TerrainLayers)
+            {
+                layer.Seed = generationSeed;
+            }
+        if(m_terrainContainer == null)
         {
-            terrainGenerator.Seed = generationSeed;
-            biomGenerator.Seed = generationSeed;
-            riverCarver.Seed = generationSeed;
-            vegetationGenerator.Seed = generationSeed;
-        }
-
-        if ((terrainGenerator !=null) && (riverCarver != null))
-        {
-            riverCarver.MaxRiverHeight = terrainGenerator.MinTerrainHeight;
+            m_terrainContainer = new GameObject("Container");
         }
     }
 
@@ -47,45 +39,30 @@ public class TerrainConstructor : MonoBehaviour
         terrainData.size = new Vector3(baseChunkSize, height, baseChunkSize);
         terrainData.heightmapResolution = baseChunkSize;
 
-        ApplyBiom(terrainData, offset);
-        ApplyHeights(terrainData, offset);
-        CarveRivers(terrainData, offset);
-
         GameObject terrain = Terrain.CreateTerrainGameObject(terrainData);
+
+        ChunkData chunkData = new ChunkData(
+            terrain.GetComponent<Terrain>(), 
+            offset, baseChunkSize,
+            new BiomData[baseChunkSize, baseChunkSize]
+        );
+
+        foreach (TerrainLayer layer in TerrainLayers)
+        {
+            layer.ApplyLayer(chunkData);
+        }
+
         Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, 0, offset.y * baseChunkSize - baseChunkSize / 2);
         GameObject terrainGameObject = Instantiate(terrain, terrainPosition, Quaternion.identity);
-        terrainGameObject.transform.parent = terrainContainer;
+        terrainGameObject.transform.parent = m_terrainContainer.transform;
         terrainGameObject.name = $"{offset.x} {offset.y}";
         Destroy(terrain);
-
-        GenerateVegetation(terrainGameObject.GetComponent<Terrain>(), offset);
 
         ChunkController newController = terrainGameObject.AddComponent<ChunkController>();
         newController.chunkIndex = offset;
         return newController;
     }
 
-    private void ApplyHeights(TerrainData terrainData, Vector2 offset)
-    {
-        float[,] heightMap = terrainGenerator.GenerateMatrix(baseChunkSize, (int)offset.y, (int)offset.x, m_biomDataMap);
-        terrainData.SetHeights(0, 0, heightMap);
-    }
-
-    private void ApplyBiom(TerrainData terrainData, Vector2 offset)
-    {
-        biomGenerator.ApplyBiom(terrainData, offset, baseChunkSize, out m_biomDataMap);
-        m_biomMap = Biom.ConvertTerrainDataArray(m_biomDataMap);
-    }
-
-    private void CarveRivers(TerrainData terrainData, Vector2 offset)
-    {
-        riverCarver.CarveRivers(terrainData, offset, baseChunkSize, m_biomMap, out m_biomMap);
-    }
-
-    private void GenerateVegetation(Terrain terrain ,Vector2 offset)
-    {
-        vegetationGenerator.ApplyVegetation(terrain, offset, baseChunkSize, m_biomMap);
-    }
 
     private void DebugMap(float[,] map)
     {

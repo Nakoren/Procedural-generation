@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseTerrainGenerator : MonoBehaviour
+public abstract class BaseTerrainGenerator : TerrainLayer
 {
-    [SerializeField] protected int seed;
     [SerializeField] protected float minTerrainHeight;
 
     public float MinTerrainHeight
@@ -12,10 +11,6 @@ public abstract class BaseTerrainGenerator : MonoBehaviour
         set { minTerrainHeight = value; }
         get { return minTerrainHeight; }
     }
-
-    abstract public float[,] GenerateMatrix(int size, int xOffStep, int yOffStep, BiomData[,] biomMap);
-
-    abstract public int Seed { get; set; }
 
     protected float[,] NormalizeToPositive(float[,] source)
     {
