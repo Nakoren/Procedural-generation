@@ -15,6 +15,9 @@ MonoBehaviour:
   baseChunkSize: 32
   height: 32
   uniformSeed: 0
-  generationSeed: 121
-  TerrainLayers: []
-  terrainContainer: {fileID: 0}
+  generationSeed: 1231512
+  TerrainLayers:
+  - {fileID: 11400000, guid: d8d5f321c04cc0e4a8df7644ac24dd52, type: 2}
+  - {fileID: 11400000, guid: 73321dcac4582aa4d8df0d1ccdbca18f, type: 2}
+  - {fileID: 11400000, guid: 56db75a724168ed4a837a94a483bf806, type: 2}
+  - {fileID: 11400000, guid: 7803b0e05c021e44e9eebea8faf1e9e3, type: 2}

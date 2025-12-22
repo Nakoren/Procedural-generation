@@ -9,9 +9,15 @@ public class ChunkData
 
     public ChunkData(Terrain terrain, Vector2 offset, int size, BiomData[,] biomMap)
     {
+        this.terrain = terrain;
+        this.offset = offset;
+        this.size = size;
+        this.biomMap = biomMap; 
+    }
+    public ChunkData(Vector2 offset, int size) {
         this.terrain = new Terrain();
         this.offset = offset;
         this.size = size;
-        this.biomMap = biomMap;
+        this.biomMap = new BiomData[size, size];
     }
 }
