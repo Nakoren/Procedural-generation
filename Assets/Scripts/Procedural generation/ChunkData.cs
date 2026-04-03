@@ -20,4 +20,9 @@ public class ChunkData
         this.size = size;
         this.biomMap = new BiomData[size, size];
     }
+
+    public void SetTerrainHeightMap(float[,] heightMap)
+    {
+        terrain.terrainData.SetHeights(0,0, heightMap);
+    }
 }

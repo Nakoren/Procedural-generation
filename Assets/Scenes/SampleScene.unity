@@ -484,7 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 100
   cameraSensitivity: 120
-  terrainController: {fileID: 0}
+  terrainController: {fileID: 1987026050}
 --- !u!23 &1256415030
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -700,7 +700,7 @@ MonoBehaviour:
   terrainConstructor: {fileID: 11400000, guid: 991391e081d2d334b91884002fb93330, type: 2}
   clearRange: 20
   loadRange: 12
-  visionRange: 3
+  visionRange: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

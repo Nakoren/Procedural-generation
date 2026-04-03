@@ -23,7 +23,6 @@ public class VegetationGenerator : BaseVegetationGenerator
         }
     }
 
-    
     private WhiteNoise m_whiteNoiseGenerator;
 
     public override int Seed
@@ -34,12 +33,12 @@ public class VegetationGenerator : BaseVegetationGenerator
             if(m_whiteNoiseGenerator != null) m_whiteNoiseGenerator.Seed = value;
         }
     }
-    private void Awake()
+    override protected void Init()
     {
         m_whiteNoiseGenerator = new WhiteNoise(m_seed);
     }
 
-    public override void ApplyLayer(ChunkData chunkData)
+    override protected void CalculateLayer(ChunkData chunkData)
     {
         TerrainData terrainData = chunkData.terrain.terrainData;
         int size = chunkData.size;

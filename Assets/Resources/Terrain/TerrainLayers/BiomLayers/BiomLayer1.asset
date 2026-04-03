@@ -25,4 +25,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aaf53809f088a7746ab8ee96582a288d, type: 2}
   placeHolderBiom: {fileID: 11400000, guid: f26bf3bc7dc6ae5418a00ba85b4afd08, type: 2}
   biomGenerationSeed: 234134
-  perlinNoisePeriod: 100
+  perlinNoisePeriod: 101

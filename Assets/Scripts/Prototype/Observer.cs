@@ -23,7 +23,10 @@ public class Observer : MonoBehaviour
     {
         m_characterController = GetComponent<CharacterController>();
         onPositionChange += terrainController.OnPlayerMove;
-        onPositionChange.Invoke(transform.position);
+        if (onPositionChange != null)
+        {
+            onPositionChange.Invoke(transform.position);
+        }
     }
 
     public void RotateCamera(Vector2 rotatingVector)

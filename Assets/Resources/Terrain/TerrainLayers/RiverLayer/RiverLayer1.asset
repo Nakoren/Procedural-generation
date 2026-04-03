@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4dd75e3e4552cb479a4fb072346f593, type: 3}
   m_Name: RiverLayer1
   m_EditorClassIdentifier: 
-  minRiverHeight: 0
+  minRiverHeight: 0.1
   riverBiom: {fileID: 11400000, guid: 141c685884c43e34b97cbe8b2be395b8, type: 2}
-  perlinNoisePeriod: 300
-  riverRange: 0.2
+  perlinNoisePeriod: 101
+  riverRange: 0.3

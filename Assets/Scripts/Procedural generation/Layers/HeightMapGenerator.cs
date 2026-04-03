@@ -18,16 +18,6 @@ public class HeightMapGenerator : BaseTerrainGenerator
     
     PerlinNoise m_perlinNoiseGenerator;
 
-    private void Awake()
-    {
-        Init();
-    }
-
-    private void Init()
-    {
-        m_perlinNoiseGenerator = new PerlinNoise(m_seed);
-    }
-
     override public int Seed
     {
         get { return m_seed; }
@@ -37,20 +27,22 @@ public class HeightMapGenerator : BaseTerrainGenerator
             m_perlinNoiseGenerator.Seed = value;
         }
     }
+    override protected void Init()
+    {
+        m_perlinNoiseGenerator = new PerlinNoise(m_seed);
+    }
 
-    public override void ApplyLayer(ChunkData chunkData)
+    override protected void CalculateLayer(ChunkData chunkData)
     {
         int size = chunkData.size;
         int xOffStep = (int)chunkData.offset.x;
         int yOffStep = (int)chunkData.offset.y;
-
-
         if(m_perlinNoiseGenerator == null) { Init(); }
         float[,] lowFrequencyNoise = GenerateSingleOctaveNoise(size, lowFrequencyPeriod, xOffStep, yOffStep);
         float[,] middleFrequencyNoise = GenerateSingleOctaveNoise(size, middleFrequencyPeriod, xOffStep, yOffStep);
         float[,] highFrequencyNoise = GenerateSingleOctaveNoise(size, highFrequencyPeriod, xOffStep, yOffStep);
-        float[,] summ = new float[size,size];
 
+        float[,] summ = new float[size,size];
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -70,12 +62,13 @@ public class HeightMapGenerator : BaseTerrainGenerator
                 summ[i, j] = modifiedHeight;
             }
         }
+        chunkData.SetTerrainHeightMap(summ);
     }
 
     public float[,] GenerateSingleOctaveNoise(int size, int period, int xOffSet, int yOffSet)
     {
         float[,] resMatrix = new float[size, size];
-        resMatrix = m_perlinNoiseGenerator.GetPerlinNoiseInArea(size, new Vector2(xOffSet, yOffSet), period);
+        resMatrix = m_perlinNoiseGenerator.GetPerlinNoiseInArea(size, new Vector2(yOffSet, xOffSet), period);
         float[,] normalizedMatrix = NormalizeToPositive(resMatrix);
         return normalizedMatrix;
     }

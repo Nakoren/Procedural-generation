@@ -5,24 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultBiomLayer", menuName = "TerrainLayers/DefaultBiomLayer")]
-public class BiomData
-{
-    public Biom biom;
-    public int humidity;
-    public int temperature;
-
-    public BiomData(Biom biom, int humidity, int temperature)
-    {
-        this.biom = biom;
-        this.humidity = humidity;
-        this.temperature = temperature;
-    }
-}
-
 public class BiomGenerator : BaseBiomGenerator
 {
     [SerializeField] int perlinNoisePeriod;
-    
 
     int m_humidityGenerationSeed;
     int m_temperatureGenerationSeed;
@@ -39,23 +24,21 @@ public class BiomGenerator : BaseBiomGenerator
         }
     }
 
-    private void Awake()
+    override protected void Init()
     {
         SplitBiomSeed();
         m_humidityPerlinNoise = new PerlinNoise(m_humidityGenerationSeed);
         m_temperaturePerlinNoise = new PerlinNoise(m_temperatureGenerationSeed);
     }
 
-    public override void ApplyLayer(ChunkData chunkData)
+    override protected void CalculateLayer(ChunkData chunkData)
     {
         Vector2 offset = chunkData.offset;
         int size = chunkData.size;
-
-
         offset = new Vector2(offset.y, offset.x);
         Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
         BiomData[,] biomMap = GetBiomMap(size, areaCenter);
-
+        chunkData.biomMap = biomMap;
         List<Biom> usedBioms = new List<Biom>();
         for(int i = 0; i < biomMap.GetLength(0); i++)
         {
@@ -67,7 +50,6 @@ public class BiomGenerator : BaseBiomGenerator
                 }
             }
         }
-
         ApplyBiomTextures(chunkData.terrain.terrainData, size, usedBioms, biomMap);
     }
 

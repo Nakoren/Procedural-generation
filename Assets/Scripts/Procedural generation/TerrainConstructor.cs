@@ -8,18 +8,32 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TerrainConstructor", menuName = "TerrainConstructor")]
 public class TerrainConstructor : ScriptableObject
 {
-    [SerializeField] public int baseChunkSize = 32;
-    [SerializeField] int height = 32;
+    [SerializeField] 
+    public int baseChunkSize = 32;
+
+    [SerializeField] 
+    int height = 32;
+
     [Header("Set \"Uniform seed\" to use single seed for all generators")]
-    [SerializeField] public bool uniformSeed;
-    [SerializeField] int generationSeed = 121;
+    [SerializeField] 
+    public bool uniformSeed;
+
+    [SerializeField] 
+    int generationSeed = 121;
 
     [Header("Insert here TerrainLayers, which you want to use")]
-    [SerializeField] public TerrainLayer[] TerrainLayers;
+    [SerializeField] 
+    public TerrainLayer[] TerrainLayers;
 
-    GameObject m_terrainContainer;
+    private GameObject m_terrainContainer;
+    private bool m_initialized = false;
 
-    void Awake()
+    private void OnEnable()
+    {
+        m_initialized = false;
+    }
+
+    void Init()
     {
         if (uniformSeed) 
             foreach (TerrainLayer layer in TerrainLayers)
@@ -30,10 +44,15 @@ public class TerrainConstructor : ScriptableObject
         {
             m_terrainContainer = new GameObject("Container");
         }
+        m_initialized = true;
     }
 
     public ChunkController ConstructTerrain(Vector2 offset)
     {
+        if(!m_initialized)
+        {
+            Init();
+        }
         TerrainData terrainData = new TerrainData();
 
         terrainData.size = new Vector3(baseChunkSize, height, baseChunkSize);
@@ -42,16 +61,15 @@ public class TerrainConstructor : ScriptableObject
         GameObject terrain = Terrain.CreateTerrainGameObject(terrainData);
 
         ChunkData chunkData = new ChunkData(
-            terrain.GetComponent<Terrain>(), 
-            offset, baseChunkSize,
+            terrain.GetComponent<Terrain>(),
+            offset,
+            baseChunkSize,
             new BiomData[baseChunkSize, baseChunkSize]
         );
-
         foreach (TerrainLayer layer in TerrainLayers)
         {
             layer.ApplyLayer(chunkData);
         }
-
         Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, 0, offset.y * baseChunkSize - baseChunkSize / 2);
         GameObject terrainGameObject = Instantiate(terrain, terrainPosition, Quaternion.identity);
         terrainGameObject.transform.parent = m_terrainContainer.transform;

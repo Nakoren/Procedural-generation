@@ -19,12 +19,16 @@ public class TerrainController : MonoBehaviour
 
     private List<ChunkController> m_loadedChunksList = new List<ChunkController>();
 
-    private void Start()
+    private void OnEnable()
     {
         m_chunkSize = terrainConstructor.baseChunkSize;
 
+        //TODO: add getting observer's position on Start
         Vector3 defaultObserverPosition = Vector3.zero;
-        m_currentChunk = new Vector2(defaultObserverPosition.x, defaultObserverPosition.z);
+        m_currentChunk = new Vector2(
+            GetChunkIndexOfValue(defaultObserverPosition.x), 
+            GetChunkIndexOfValue(defaultObserverPosition.z)
+            );
 
         UpdateChunks();
     }

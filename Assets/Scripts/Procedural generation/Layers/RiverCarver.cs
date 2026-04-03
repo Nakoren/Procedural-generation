@@ -25,12 +25,12 @@ public class RiverCarver : BaseRiverCarver
         }
     }
 
-    private void Awake()
+    override protected void Init()
     {
         m_perlinNoiseGenerator = new PerlinNoise(m_seed);
     }
 
-    public override void ApplyLayer(ChunkData chunkData)
+    override protected void CalculateLayer(ChunkData chunkData)
     {
         Vector2 offset = new Vector2(chunkData.offset.y, chunkData.offset.x);
 
