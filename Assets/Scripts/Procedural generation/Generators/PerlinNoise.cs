@@ -29,6 +29,11 @@ public class PerlinNoise
 
     public float[,] GetPerlinNoiseInArea(int size, Vector2 offset, int period)
     {
+        if(period % 2 == 0)
+        {
+            period += 1;
+            Debug.LogWarning("Detected even perlin noise's period. Forced to odd");
+        }
         float[,] noise = new float[size, size];
         Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
         float halfSize = size / 2;

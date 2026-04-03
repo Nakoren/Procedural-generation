@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultRiverGenerator", menuName = "TerrainLayers/DefaultRiverLayer")]
-public class RiverCarver : BaseRiverCarver
+public class DefaultRiverLayer : BaseRiverLayer
 {
     [SerializeField] int perlinNoisePeriod;
     
@@ -78,11 +78,11 @@ public class RiverCarver : BaseRiverCarver
                 float newHeight = pointHeight + (minRiverHeight - pointHeight) * pointAffilation;
                 newChunkHeights[x, y] = newHeight;
 
-                if (newHeight <= m_maxRiverHeight)
+                if (newHeight <= maxRiverHeight)
                 {
                     chunkData.biomMap[x, y] = new BiomData(riverBiom, 0, 0);
                     for (int i = 0; i < terrainLayersCount; i++)
-                    {
+                        {
                         alphaMaps[x, y, i] = 0;
                     }
                     alphaMaps[x, y, terrainLayersCount] = 1;
