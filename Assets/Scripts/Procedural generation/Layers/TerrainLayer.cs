@@ -6,7 +6,7 @@ public abstract class TerrainLayer : ScriptableObject
     protected int m_seed;
     bool m_initialized = false;
 
-    protected abstract void Init();
+    public abstract void Init();
     protected abstract void CalculateLayer(ChunkData chunkData);
 
     private void OnEnable()

@@ -24,7 +24,7 @@ public class BiomGenerator : BaseBiomGenerator
         }
     }
 
-    override protected void Init()
+    override public void Init()
     {
         SplitBiomSeed();
         m_humidityPerlinNoise = new PerlinNoise(m_humidityGenerationSeed);

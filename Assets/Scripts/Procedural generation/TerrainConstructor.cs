@@ -35,11 +35,16 @@ public class TerrainConstructor : ScriptableObject
 
     void Init()
     {
-        if (uniformSeed) 
-            foreach (TerrainLayer layer in TerrainLayers)
+        foreach (TerrainLayer layer in TerrainLayers)
+        {
+            layer.Init();
+            if (uniformSeed)
             {
                 layer.Seed = generationSeed;
             }
+        }
+        
+            
         if(m_terrainContainer == null)
         {
             m_terrainContainer = new GameObject("Container");

@@ -25,7 +25,7 @@ public class DefaultRiverLayer : BaseRiverLayer
         }
     }
 
-    override protected void Init()
+    override public void Init()
     {
         m_perlinNoiseGenerator = new PerlinNoise(m_seed);
     }

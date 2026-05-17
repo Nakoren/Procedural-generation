@@ -33,7 +33,7 @@ public class VegetationGenerator : BaseVegetationGenerator
             if(m_whiteNoiseGenerator != null) m_whiteNoiseGenerator.Seed = value;
         }
     }
-    override protected void Init()
+    override public void Init()
     {
         m_whiteNoiseGenerator = new WhiteNoise(m_seed);
     }

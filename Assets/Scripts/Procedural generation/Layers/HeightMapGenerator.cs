@@ -27,7 +27,7 @@ public class HeightMapGenerator : BaseTerrainGenerator
             m_perlinNoiseGenerator.Seed = value;
         }
     }
-    override protected void Init()
+    override public void Init()
     {
         m_perlinNoiseGenerator = new PerlinNoise(m_seed);
     }
@@ -37,7 +37,6 @@ public class HeightMapGenerator : BaseTerrainGenerator
         int size = chunkData.size;
         int xOffStep = (int)chunkData.offset.x;
         int yOffStep = (int)chunkData.offset.y;
-        if(m_perlinNoiseGenerator == null) { Init(); }
         float[,] lowFrequencyNoise = GenerateSingleOctaveNoise(size, lowFrequencyPeriod, xOffStep, yOffStep);
         float[,] middleFrequencyNoise = GenerateSingleOctaveNoise(size, middleFrequencyPeriod, xOffStep, yOffStep);
         float[,] highFrequencyNoise = GenerateSingleOctaveNoise(size, highFrequencyPeriod, xOffStep, yOffStep);

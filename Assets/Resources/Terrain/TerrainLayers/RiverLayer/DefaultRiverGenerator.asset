@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: b4dd75e3e4552cb479a4fb072346f593, type: 3}
   m_Name: DefaultRiverGenerator
   m_EditorClassIdentifier: Assembly-CSharp::DefaultRiverLayer
   minRiverHeight: 0
-  maxRiverHeight: 0.1
+  maxRiverHeight: 0.2
   riverBiom: {fileID: 11400000, guid: 141c685884c43e34b97cbe8b2be395b8, type: 2}
-  perlinNoisePeriod: 501
-  riverRange: 0.2
+  perlinNoisePeriod: 301
+  riverRange: 0.1
