@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseChunkSize: 33
   height: 32
-  uniformSeed: 0
+  uniformSeed: 1
   generationSeed: 1231512
   TerrainLayers:
   - {fileID: 11400000, guid: d8d5f321c04cc0e4a8df7644ac24dd52, type: 2}
