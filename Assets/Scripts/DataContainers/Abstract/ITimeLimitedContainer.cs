@@ -5,9 +5,8 @@ public abstract class TimeLimitedContainer<KeyType, DataType>
 {
     public Action onDataClear;
 
-    public abstract DataType this[KeyType key]
-    {
-        get;
-        set;
-    }
+	public abstract void Set(KeyType key, DataType data);
+
+	public abstract DataType? Get(KeyType key);
+
 }

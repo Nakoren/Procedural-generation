@@ -1,40 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.LightingExplorerTableColumn;
 
-public class TimeLimitedChunkMap<DataType> : TimeLimitedContainer<Vector2, DataType>
+public class TimeLimitedChunkMap : TimeLimitedContainer<Vector2, float?>
 {
-	private Dictionary<Vector2, DataType> m_Map;
-	private Dictionary<Vector2, int> m_timeMap;
+	private Dictionary<Vector2, float?> m_Map = new Dictionary<Vector2, float?>();
+	private Dictionary<Vector2, int> m_timeMap = new Dictionary<Vector2, int>();
 
 	private int m_existTime;
 	private int m_chunkSize;
 
-	public override DataType this[Vector2 key] { 
-		get
+	public TimeLimitedChunkMap(int existTime, int chunkSize)
+	{
+		m_existTime = existTime;
+		m_chunkSize = chunkSize;
+	}
+
+	public override void Set(Vector2 key, float? data)
+	{
+		if (m_Map[key] == null)
 		{
-			if (m_Map[key] == null)
-			{
-				return default(DataType);
-			}
-			DataType valueToReturn = m_Map[key];
-			DecreaseTimer();
-			Vector2 chunkPosition = GetChunkByPosition(key);
-			AddOrResetTimer(chunkPosition);
-			return valueToReturn;
+			m_Map.Add(key, data);
 		}
-		set
+		else
 		{
-			if (m_Map[key] == null)
-			{
-				m_Map.Add(key, value);
-			}
-			else
-			{
-				m_Map[key] = value;
-			}
-			Vector2 chunkPosition = GetChunkByPosition(key);
-			AddOrResetTimer(chunkPosition);
+			m_Map[key] = data;
 		}
+		Vector2 chunkPosition = GetChunkByPosition(key);
+		AddOrResetTimer(chunkPosition);
+	}
+
+	public override float? Get(Vector2 key)
+	{
+		if (!m_Map.ContainsKey(key))
+		{
+			return null;
+		}
+		float? valueToReturn = m_Map[key];
+		DecreaseTimer();
+		Vector2 chunkPosition = GetChunkByPosition(key);
+		AddOrResetTimer(chunkPosition);
+		return valueToReturn;
 	}
 
 	private Vector2 GetChunkByPosition(Vector2 position)
@@ -101,3 +107,4 @@ public class TimeLimitedChunkMap<DataType> : TimeLimitedContainer<Vector2, DataT
 		}
 	}
 }
+
