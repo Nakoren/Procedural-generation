@@ -9,4 +9,6 @@ public abstract class TimeLimitedContainer<KeyType, DataType>
 
 	public abstract DataType? Get(KeyType key);
 
+	public abstract bool Contains(KeyType key);
+
 }

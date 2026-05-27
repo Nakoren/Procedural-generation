@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.LightingExplorerTableColumn;
 
-public class TimeLimitedChunkMap : TimeLimitedContainer<Vector2, float?>
+public class TimeLimitedChunkMap : TimeLimitedContainer<Vector2, float>
 {
-	private Dictionary<Vector2, float?> m_Map = new Dictionary<Vector2, float?>();
+	private Dictionary<Vector2, float> m_map = new Dictionary<Vector2, float>();
 	private Dictionary<Vector2, int> m_timeMap = new Dictionary<Vector2, int>();
 
 	private int m_existTime;
@@ -16,31 +16,36 @@ public class TimeLimitedChunkMap : TimeLimitedContainer<Vector2, float?>
 		m_chunkSize = chunkSize;
 	}
 
-	public override void Set(Vector2 key, float? data)
+	public override void Set(Vector2 key, float data)
 	{
-		if (m_Map[key] == null)
+		if (!m_map.ContainsKey(key))
 		{
-			m_Map.Add(key, data);
+			m_map.Add(key, data);
 		}
 		else
 		{
-			m_Map[key] = data;
+			m_map[key] = data;
 		}
 		Vector2 chunkPosition = GetChunkByPosition(key);
 		AddOrResetTimer(chunkPosition);
 	}
 
-	public override float? Get(Vector2 key)
+	public override float Get(Vector2 key)
 	{
-		if (!m_Map.ContainsKey(key))
+		if (!m_map.ContainsKey(key))
 		{
-			return null;
+			return 0;
 		}
-		float? valueToReturn = m_Map[key];
+		float valueToReturn = m_map[key];
 		DecreaseTimer();
 		Vector2 chunkPosition = GetChunkByPosition(key);
 		AddOrResetTimer(chunkPosition);
 		return valueToReturn;
+	}
+
+	public override bool Contains(Vector2 key)
+	{
+		return m_map.ContainsKey(key);
 	}
 
 	private Vector2 GetChunkByPosition(Vector2 position)
@@ -75,7 +80,7 @@ public class TimeLimitedChunkMap : TimeLimitedContainer<Vector2, float?>
 		List<Vector2> valuesToRemove = GetAllPositionsInChunk(chunkIndex);
 		foreach(Vector2 valueKey in valuesToRemove)
 		{
-			m_Map.Remove(valueKey);
+			m_map.Remove(valueKey);
 		}
 	}
 
