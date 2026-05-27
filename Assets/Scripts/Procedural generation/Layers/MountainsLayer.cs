@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class MountainsLayer : MonoBehaviour
+public class MountainsLayer : BaseMountainLayer
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	public override void Init()
+	{
+		throw new System.NotImplementedException();
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	protected override void CalculateLayer(ChunkData chunkData)
+	{
+		throw new System.NotImplementedException();
+	}
 }
