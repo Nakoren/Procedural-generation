@@ -7,129 +7,129 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DefaultBiomLayer", menuName = "TerrainLayers/DefaultBiomLayer")]
 public class BiomGenerator : BaseBiomGenerator
 {
-    [SerializeField] int perlinNoisePeriod;
+	[SerializeField] int perlinNoisePeriod;
 
-    int m_humidityGenerationSeed;
-    int m_temperatureGenerationSeed;
+	int m_humidityGenerationSeed;
+	int m_temperatureGenerationSeed;
 
-    private PerlinNoise m_humidityPerlinNoise;
-    private PerlinNoise m_temperaturePerlinNoise;
+	private PerlinNoise m_humidityPerlinNoise;
+	private PerlinNoise m_temperaturePerlinNoise;
 
-    override public int Seed
-    {
-        get { return biomGenerationSeed; }
-        set { 
-            biomGenerationSeed = value; 
-            SplitBiomSeed();
-        }
-    }
+	override public int Seed
+	{
+		get { return biomGenerationSeed; }
+		set { 
+			biomGenerationSeed = value; 
+			SplitBiomSeed();
+		}
+	}
 
-    override public void Init()
-    {
-        SplitBiomSeed();
-        m_humidityPerlinNoise = new PerlinNoise(m_humidityGenerationSeed);
-        m_temperaturePerlinNoise = new PerlinNoise(m_temperatureGenerationSeed);
-    }
+	override public void Init()
+	{
+		SplitBiomSeed();
+		m_humidityPerlinNoise = new PerlinNoise(m_humidityGenerationSeed);
+		m_temperaturePerlinNoise = new PerlinNoise(m_temperatureGenerationSeed);
+	}
 
-    override protected void CalculateLayer(ChunkData chunkData)
-    {
-        Vector2 offset = chunkData.offset;
-        int size = chunkData.size;
-        offset = new Vector2(offset.y, offset.x);
-        Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
-        BiomData[,] biomMap = GetBiomMap(size, areaCenter);
-        chunkData.biomMap = biomMap;
-        List<Biom> usedBioms = new List<Biom>();
-        for(int i = 0; i < biomMap.GetLength(0); i++)
-        {
-            for(int j = 0; j < biomMap.GetLength(1); j++)
-            {
-                if (!usedBioms.Contains(biomMap[i, j].biom))
-                {
-                    usedBioms.Add(biomMap[i, j].biom);
-                }
-            }
-        }
-        ApplyBiomTextures(chunkData.terrain.terrainData, size, usedBioms, biomMap);
-    }
+	override protected void CalculateLayer(ChunkData chunkData)
+	{
+		Vector2 offset = chunkData.offset;
+		int size = chunkData.size;
+		offset = new Vector2(offset.y, offset.x);
+		Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
+		BiomData[,] biomMap = GetBiomMap(size, areaCenter);
+		chunkData.biomMap = biomMap;
+		List<Biom> usedBioms = new List<Biom>();
+		for(int i = 0; i < biomMap.GetLength(0); i++)
+		{
+			for(int j = 0; j < biomMap.GetLength(1); j++)
+			{
+				if (!usedBioms.Contains(biomMap[i, j].biom))
+				{
+					usedBioms.Add(biomMap[i, j].biom);
+				}
+			}
+		}
+		ApplyBiomTextures(chunkData.terrain.terrainData, size, usedBioms, biomMap);
+	}
 
-    private BiomData[,] GetBiomMap(int size, Vector2 areaCenter)
-    {
-        BiomData[,] biomMap = new BiomData[size, size];
-        int halfSize = size / 2;
-        for (int x = 0; x < size; x++)
-        {
-            for (int y = 0; y < size; y++)
-            {
-                Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
+	private BiomData[,] GetBiomMap(int size, Vector2 areaCenter)
+	{
+		BiomData[,] biomMap = new BiomData[size, size];
+		int halfSize = size / 2;
+		for (int x = 0; x < size; x++)
+		{
+			for (int y = 0; y < size; y++)
+			{
+				Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
 
-                BiomData currentBiom = GetBiomAtPoint(pointPosition);
-                biomMap[x, y] = currentBiom;    
-            }
-        }
-        return biomMap;
-    }
+				BiomData currentBiom = GetBiomAtPoint(pointPosition);
+				biomMap[x, y] = currentBiom;    
+			}
+		}
+		return biomMap;
+	}
 
-    private BiomData GetBiomAtPoint(Vector2 point)
-    {
-        float humidityPerlinValue = Mathf.Max(m_humidityPerlinNoise.GetValueAtPoint(point, perlinNoisePeriod) * (float)1.8, -1);
-        float biomHumidity = Mathf.Min(((humidityPerlinValue / 2) + (float)0.5) * 100, 100);
-        float temperaturePerlinValue = Mathf.Max(m_temperaturePerlinNoise.GetValueAtPoint(point, perlinNoisePeriod) * (float)1.8, -1);
-        float biomTemperature = Mathf.Min(((temperaturePerlinValue / 2) + (float)0.5) * 100,100);
+	private BiomData GetBiomAtPoint(Vector2 point)
+	{
+		float humidityPerlinValue = Mathf.Max(m_humidityPerlinNoise.GetValueAtPoint(point, perlinNoisePeriod) * (float)1.8, -1);
+		float biomHumidity = Mathf.Min(((humidityPerlinValue / 2) + (float)0.5) * 100, 100);
+		float temperaturePerlinValue = Mathf.Max(m_temperaturePerlinNoise.GetValueAtPoint(point, perlinNoisePeriod) * (float)1.8, -1);
+		float biomTemperature = Mathf.Min(((temperaturePerlinValue / 2) + (float)0.5) * 100,100);
 
-        Biom resBiom = null;
-        foreach(Biom biom in biomsList)
-        {
-            if(biom.CheckBiom(biomHumidity, biomTemperature))
-            {
-                resBiom = biom;
-            }
-        }
-        if (resBiom == null) {
-            resBiom = placeHolderBiom;
-        }
-        return new BiomData(resBiom, (int)biomHumidity, (int)biomTemperature);
-    }
+		Biom resBiom = null;
+		foreach(Biom biom in biomsList)
+		{
+			if(biom.CheckBiom(biomHumidity, biomTemperature))
+			{
+				resBiom = biom;
+			}
+		}
+		if (resBiom == null) {
+			resBiom = placeHolderBiom;
+		}
+		return new BiomData(resBiom, (int)biomHumidity, (int)biomTemperature);
+	}
 
-    private void ApplyBiomTextures(TerrainData terrainData, int size, List<Biom> usedBioms, BiomData[,] biomMap) {
-        List<UnityEngine.TerrainLayer> layerList = new List<UnityEngine.TerrainLayer>();
-        foreach (Biom biom in usedBioms)
-        {
-            layerList.Add(biom.terrainLayer);
-        }
-        terrainData.terrainLayers = layerList.ToArray();
+	private void ApplyBiomTextures(TerrainData terrainData, int size, List<Biom> usedBioms, BiomData[,] biomMap) {
+		List<UnityEngine.TerrainLayer> layerList = new List<UnityEngine.TerrainLayer>();
+		foreach (Biom biom in usedBioms)
+		{
+			layerList.Add(biom.terrainLayer);
+		}
+		terrainData.terrainLayers = layerList.ToArray();
 
-        float[,,] alphaMaps = new float[size, size, layerList.Count];
+		float[,,] alphaMaps = new float[size, size, layerList.Count];
 
-        for (int x = 0; x < size; x++)
-        {
-            for (int y = 0; y < size; y++)
-            {
-                for (int layerInd = 0; layerInd < usedBioms.Count; layerInd++)
-                {
-                    Biom targetBiom = biomMap[x, y].biom;
-                    if (targetBiom == usedBioms[layerInd])
-                    {
-                        alphaMaps[x, y, layerInd] = 1;
-                    }
-                    else
-                    {
-                        alphaMaps[x, y, layerInd] = 0;
-                    }
-                }
-            }
-        }
-        terrainData.alphamapResolution = size;
-        terrainData.SetAlphamaps(0, 0, alphaMaps);
-    }
+		for (int x = 0; x < size; x++)
+		{
+			for (int y = 0; y < size; y++)
+			{
+				for (int layerInd = 0; layerInd < usedBioms.Count; layerInd++)
+				{
+					Biom targetBiom = biomMap[x, y].biom;
+					if (targetBiom == usedBioms[layerInd])
+					{
+						alphaMaps[x, y, layerInd] = 1;
+					}
+					else
+					{
+						alphaMaps[x, y, layerInd] = 0;
+					}
+				}
+			}
+		}
+		terrainData.alphamapResolution = size;
+		terrainData.SetAlphamaps(0, 0, alphaMaps);
+	}
 
-    //Split a biom seed to a 2 pseudo-random seeds
-    private void SplitBiomSeed()
-    {
-        m_humidityGenerationSeed = (biomGenerationSeed ^ 1657);
-        if(m_humidityPerlinNoise != null) m_humidityPerlinNoise.Seed = m_humidityGenerationSeed;
+	//Split a biom seed to a 2 pseudo-random seeds
+	private void SplitBiomSeed()
+	{
+		m_humidityGenerationSeed = (biomGenerationSeed ^ 1657);
+		if(m_humidityPerlinNoise != null) m_humidityPerlinNoise.Seed = m_humidityGenerationSeed;
 
-        m_temperatureGenerationSeed = (biomGenerationSeed ^ 953);
-        if (m_temperaturePerlinNoise != null) m_temperaturePerlinNoise.Seed = m_temperatureGenerationSeed;
-    }
+		m_temperatureGenerationSeed = (biomGenerationSeed ^ 953);
+		if (m_temperaturePerlinNoise != null) m_temperaturePerlinNoise.Seed = m_temperatureGenerationSeed;
+	}
 }

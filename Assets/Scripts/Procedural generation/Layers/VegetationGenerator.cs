@@ -7,95 +7,95 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "DefaultBegetationLayer", menuName = "TerrainLayers/DefaultVegetationLayer")]
 public class VegetationGenerator : BaseVegetationGenerator
 {
-    private class PointData
-    {
-        public Vector2 position;
-        public Vector2 positionInArea;
-        public float value;
-        public Biom biom;
+	private class PointData
+	{
+		public Vector2 position;
+		public Vector2 positionInArea;
+		public float value;
+		public Biom biom;
 
-        public PointData(Vector2 position, Vector2 pointInArea, float value, Biom biom)
-        {
-            this.position = position;
-            this.positionInArea = pointInArea;
-            this.value = value;
-            this.biom = biom;
-        }
-    }
+		public PointData(Vector2 position, Vector2 pointInArea, float value, Biom biom)
+		{
+			this.position = position;
+			this.positionInArea = pointInArea;
+			this.value = value;
+			this.biom = biom;
+		}
+	}
 
-    private WhiteNoise m_whiteNoiseGenerator;
+	private WhiteNoise m_whiteNoiseGenerator;
 
-    public override int Seed
-    {
-        get { return m_seed; }
-        set { 
-            m_seed = value;
-            if(m_whiteNoiseGenerator != null) m_whiteNoiseGenerator.Seed = value;
-        }
-    }
-    override public void Init()
-    {
-        m_whiteNoiseGenerator = new WhiteNoise(m_seed);
-    }
+	public override int Seed
+	{
+		get { return m_seed; }
+		set { 
+			m_seed = value;
+			if(m_whiteNoiseGenerator != null) m_whiteNoiseGenerator.Seed = value;
+		}
+	}
+	override public void Init()
+	{
+		m_whiteNoiseGenerator = new WhiteNoise(m_seed);
+	}
 
-    override protected void CalculateLayer(ChunkData chunkData)
-    {
-        TerrainData terrainData = chunkData.terrain.terrainData;
-        int size = chunkData.size;
-        Vector2 offset = chunkData.offset;
+	override protected void CalculateLayer(ChunkData chunkData)
+	{
+		TerrainData terrainData = chunkData.terrain.terrainData;
+		int size = chunkData.size;
+		Vector2 offset = chunkData.offset;
 
-        Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
-        int halfSize = size / 2;
-        float[,] terrainHeights = terrainData.GetHeights(0, 0, size, size);
-        List<PointData> dataList = new List<PointData>();
+		Vector2 areaCenter = new Vector2(size * offset.x - offset.x, size * offset.y - offset.y);
+		int halfSize = size / 2;
+		float[,] terrainHeights = terrainData.GetHeights(0, 0, size, size);
+		List<PointData> dataList = new List<PointData>();
 
-        for (int x=0; x<size; x++)
-        {
-            for(int y = 0; y < size; y++)
-            {
+		for (int x=0; x<size; x++)
+		{
+			for(int y = 0; y < size; y++)
+			{
 
-                Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
-                Biom pointBiom = chunkData.biomMap[y,x].biom;
-                int chanceAtPoint = (int)(m_whiteNoiseGenerator.GetValueAtPoint(pointPosition) * 100);
-                
-                if (pointBiom.CheckPlantSpawn(chanceAtPoint))
-                {
-                    dataList.Add(new PointData(pointPosition, new Vector2(x,y), chanceAtPoint, pointBiom));
-                }
-            }
-        }
+				Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
+				Biom pointBiom = chunkData.biomMap[y,x].biom;
+				int chanceAtPoint = (int)(m_whiteNoiseGenerator.GetValueAtPoint(pointPosition) * 100);
+				
+				if (pointBiom.CheckPlantSpawn(chanceAtPoint))
+				{
+					dataList.Add(new PointData(pointPosition, new Vector2(x,y), chanceAtPoint, pointBiom));
+				}
+			}
+		}
 
-        for (int i = 0; i < dataList.Count; i++)
-        {
-            PointData pointData = dataList[i];
-            Biom curBiom = pointData.biom;
+		for (int i = 0; i < dataList.Count; i++)
+		{
+			PointData pointData = dataList[i];
+			Biom curBiom = pointData.biom;
 
-            float[,] sorroundingNoise = m_whiteNoiseGenerator.GetNoiseInArea(pointData.position, pointData.biom.vegetationIsolationRange);
+			float[,] sorroundingNoise = m_whiteNoiseGenerator.GetNoiseInArea(pointData.position, pointData.biom.vegetationIsolationRange);
 
-            bool bestInSorroundings = true;
-            for(int ni = 0; ni < sorroundingNoise.GetLength(0); ni++)
-            {
-                for (int nj = 0; nj < sorroundingNoise.GetLength(1); nj++)
-                {
-                    if (sorroundingNoise[ni, nj] < pointData.value)
-                    {
-                        bestInSorroundings = false;
-                    }
-                }
-            }
+			bool bestInSorroundings = true;
+			for(int ni = 0; ni < sorroundingNoise.GetLength(0); ni++)
+			{
+				for (int nj = 0; nj < sorroundingNoise.GetLength(1); nj++)
+				{
+					if (sorroundingNoise[ni, nj] < pointData.value)
+					{
+						bestInSorroundings = false;
+					}
+				}
+			}
 
-            if (bestInSorroundings)
-            {
-                Vector3 spawnPosition = new Vector3(
-                    pointData.positionInArea.x, 
-                    terrainData.GetHeight((int)pointData.positionInArea.x, (int)pointData.positionInArea.y), 
-                    pointData.positionInArea.y
-                    );
-                GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, m_seed);
-                if (spawnObject == null) continue;
-                GameObject newObject = Instantiate(spawnObject, chunkData.terrain.gameObject.transform);
-                newObject.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);
-            }
-        }
-    }
+			if (bestInSorroundings)
+			{
+				Vector3 spawnPosition = new Vector3(
+					pointData.positionInArea.x, 
+					terrainData.GetHeight((int)pointData.positionInArea.x, (int)pointData.positionInArea.y), 
+					pointData.positionInArea.y
+					);
+				GameObject spawnObject = curBiom.GetRandomPlantAtPoint(pointData.position, m_seed);
+				if (spawnObject == null) continue;
+				GameObject newObject = Instantiate(spawnObject, chunkData.terrain.gameObject.transform);
+				newObject.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);
+			}
+		}
+	}
 }

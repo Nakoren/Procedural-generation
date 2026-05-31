@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class TimeLimitedContainer<KeyType, DataType>
 {
-    public Action onDataClear;
+	public Action onDataClear;
 
 	public abstract void Set(KeyType key, DataType data);
 
