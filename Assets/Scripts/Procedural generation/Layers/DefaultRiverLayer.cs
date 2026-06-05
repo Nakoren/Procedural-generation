@@ -79,7 +79,7 @@ public class DefaultRiverLayer : BaseRiverLayer
 				float newHeight = pointHeight + (minRiverHeight - pointHeight) * pointAffilation;
 				newChunkHeights[x, y] = newHeight;
 
-				if (newHeight <= maxRiverHeight)
+				if ((newHeight <= maxRiverHeight) && (pointAffilation > 0))
 				{
 					chunkData.biomMap[x, y] = new BiomData(riverBiom, 0, 0);
 					for (int i = 0; i < terrainLayersCount; i++)

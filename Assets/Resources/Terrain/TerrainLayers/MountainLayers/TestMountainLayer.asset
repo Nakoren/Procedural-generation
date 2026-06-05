@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66ca9797d74693743a3115d2b7d06e67, type: 3}
-  m_Name: DefaultMountainLayer
+  m_Name: TestMountainLayer
   m_EditorClassIdentifier: Assembly-CSharp::DefaultMountainsLayer
-  minMountainsHeight: 0.3
+  minMountainsHeight: 0
   maxMountainsHeight: 1
   MountainBiom: {fileID: 11400000, guid: 8d0b9257e2c370b428d098d1511027e5, type: 2}
-  mountainAreaGenerationPeriod: 1001
-  mountainNoiseRange: 0.1
-  maxAffilationValue: 0.7
-  mountainGenerationPeriod: 129
-  roughness: 2
-  dataSaveTime: 10000
+  mountainAreaGenerationPeriod: 101
+  mountainNoiseRange: 100
+  maxAffilationValue: 0
+  mountainGenerationPeriod: 257
+  roughness: 1
+  dataSaveTime: 100

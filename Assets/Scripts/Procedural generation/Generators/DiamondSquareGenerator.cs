@@ -64,7 +64,7 @@ public class DiamondSquareGenerator: SeededGenerator
 		float point4Height = GetValueAtPoint(point4);
 
 		float averageNeighbourHeight = (point1Height + point2Height + point3Height + point4Height) / 4;
-		float modifier = 1 / ((m_chunkSize - 1) / requiredStep);
+		float modifier = (float)1 / ((m_chunkSize - 1) / requiredStep);
 		float heightChange = (heightValueAtPoint - 0.5f) * modifier;
 		float pointHeight = averageNeighbourHeight + heightChange * m_roughness;
 		return SetHashAndReturn(position, pointHeight);

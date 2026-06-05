@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: DefaultTerrainConstructor
   m_EditorClassIdentifier: 
   baseChunkSize: 33
-  height: 32
+  height: 100
   uniformSeed: 1
   generationSeed: 1231512
   TerrainLayers:
   - {fileID: 11400000, guid: d8d5f321c04cc0e4a8df7644ac24dd52, type: 2}
   - {fileID: 11400000, guid: 73321dcac4582aa4d8df0d1ccdbca18f, type: 2}
+  - {fileID: 11400000, guid: 272bd005af470af4399ddd0d1a99732d, type: 2}
   - {fileID: 11400000, guid: fe25e4a48949546409bfbe5f351555ad, type: 2}
   - {fileID: 11400000, guid: 7803b0e05c021e44e9eebea8faf1e9e3, type: 2}
