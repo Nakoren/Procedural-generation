@@ -94,8 +94,8 @@ public class PerlinNoise
 		areaCenter = new Vector2(Mathf.Round(position.x / (period - 1)) * (period - 1), Mathf.Round(position.y / (period - 1)) * (period - 1));
 
 		//Calculation of relative positions of point in the area
-		float horizontalPositionInArea = (Mathf.Abs((areaCenter.x - halfPeriod) - position.x)) / (float)period;
-		float verticalPositionInArea = (Mathf.Abs((areaCenter.y - halfPeriod) - position.y)) / (float)period;
+		float horizontalPositionInArea = Mathf.Abs(areaCenter.x - halfPeriod - position.x) / (float)period;
+		float verticalPositionInArea = Mathf.Abs(areaCenter.y - halfPeriod - position.y) / (float)period;
 
 		//Calculation of corners of the area where point is placed
 		Vector2 topLeftCorner = new Vector2((int)areaCenter.x - halfPeriod, (int)areaCenter.y + halfPeriod);

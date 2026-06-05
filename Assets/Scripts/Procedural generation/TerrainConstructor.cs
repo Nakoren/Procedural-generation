@@ -37,6 +37,7 @@ public class TerrainConstructor : ScriptableObject
 	{
 		foreach (TerrainLayer layer in TerrainLayers)
 		{
+			if (layer == null) continue;
 			layer.Init();
 			if (uniformSeed)
 			{
@@ -73,7 +74,7 @@ public class TerrainConstructor : ScriptableObject
 		);
 		foreach (TerrainLayer layer in TerrainLayers)
 		{
-			layer.ApplyLayer(chunkData);
+			if (layer != null) layer.ApplyLayer(chunkData);
 		}
 		Vector3 terrainPosition = new Vector3(offset.x * baseChunkSize - baseChunkSize / 2, 0, offset.y * baseChunkSize - baseChunkSize / 2);
 		GameObject terrainGameObject = Instantiate(terrain, terrainPosition, Quaternion.identity);

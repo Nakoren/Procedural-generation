@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class ChunkData
@@ -24,5 +25,19 @@ public class ChunkData
 	public void SetTerrainHeightMap(float[,] heightMap)
 	{
 		terrain.terrainData.SetHeights(0,0, heightMap);
+	}
+
+	public float[,] GetTerrainHeightMap() => terrain.terrainData.GetHeights(0, 0, size, size);
+
+	public void SetAlphaMaps(float[,,] alphaMaps) => terrain.terrainData.SetAlphamaps(0, 0, alphaMaps);
+
+	public float[,,] GetAlphaMaps() => terrain.terrainData.GetAlphamaps(0, 0, size, size);
+
+	public int GetTerrainLayersCount() => terrain.terrainData.terrainLayers.Count();
+
+	public UnityEngine.TerrainLayer GetTerrainLayer(int index) => terrain.terrainData.terrainLayers[index];
+
+	public void SetTerrainLayers(UnityEngine.TerrainLayer[] terrainLayers) {
+		terrain.terrainData.terrainLayers = terrainLayers;
 	}
 }

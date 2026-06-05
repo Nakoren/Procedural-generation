@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class BaseTerrainGenerator : TerrainLayer
 {
 	[SerializeField] protected float minTerrainHeight;
+	[SerializeField] protected float maxTerrainHeight;
 
 	public float MinTerrainHeight
 	{

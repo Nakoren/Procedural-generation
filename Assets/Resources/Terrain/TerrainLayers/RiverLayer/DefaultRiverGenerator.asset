@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultRiverGenerator
   m_EditorClassIdentifier: Assembly-CSharp::DefaultRiverLayer
   minRiverHeight: 0
-  maxRiverHeight: 0.2
+  maxRiverHeight: 0.1
   riverBiom: {fileID: 11400000, guid: 141c685884c43e34b97cbe8b2be395b8, type: 2}
   perlinNoisePeriod: 301
   riverRange: 0.1

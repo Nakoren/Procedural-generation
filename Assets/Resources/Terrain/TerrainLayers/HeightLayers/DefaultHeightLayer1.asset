@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02bccaefe52817a4dac7ff9ef89f4e25, type: 3}
   m_Name: DefaultHeightLayer1
   m_EditorClassIdentifier: 
-  minTerrainHeight: 0.2
-  lowFrequencyPeriod: 201
+  minTerrainHeight: 0.1
+  maxTerrainHeight: 0.3
+  lowFrequencyPeriod: 101
   middleFrequencyPeriod: 55
   highFrequencyPeriod: 33
   defaultLowFrequencyAmplitude: 0

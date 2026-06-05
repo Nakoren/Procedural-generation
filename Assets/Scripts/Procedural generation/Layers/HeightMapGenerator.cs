@@ -57,7 +57,7 @@ public class HeightMapGenerator : BaseTerrainGenerator
 					middleFrequencyNoise[i, j] * finalMiddleFrequency + 
 					highFrequencyNoise[i, j] * finalHighFrequency;
 				//correcting height, so it will be normalized and placed above minimumHeight
-				float modifiedHeight = minTerrainHeight + (nonModifiedHeight * (1 - minTerrainHeight));
+				float modifiedHeight = minTerrainHeight + (nonModifiedHeight * (maxTerrainHeight - minTerrainHeight));
 				summ[i, j] = modifiedHeight;
 			}
 		}

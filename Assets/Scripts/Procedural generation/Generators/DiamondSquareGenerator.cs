@@ -4,7 +4,6 @@ public class DiamondSquareGenerator: SeededGenerator
 {
 	private TimeLimitedChunkMap m_globalDataMap;
 	private int m_chunkSize;
-	private float m_height;
 	private float m_roughness;
 
 	public enum StepType
@@ -13,11 +12,15 @@ public class DiamondSquareGenerator: SeededGenerator
 		Square
 	}
 
-	public DiamondSquareGenerator(int seed, int chunkSize, float roughness)
+	public DiamondSquareGenerator(int seed, int chunkSize, float roughness, int dataSaveTime)
 	{
 		m_seed = seed;
 		m_chunkSize = chunkSize;
 		m_roughness = roughness;
+
+		//TODO: Add chunkSize verification
+
+		m_globalDataMap = new TimeLimitedChunkMap(chunkSize, dataSaveTime);
 	}
 
 	public override float GetValueAtPoint(Vector2 position)
@@ -27,11 +30,12 @@ public class DiamondSquareGenerator: SeededGenerator
 		{
 			return m_globalDataMap.Get(position);
 		}
-		int halfChunkSize = (m_chunkSize-1) / 2;
-		float heightValueAtPoint = m_height * GetRandomValueAtPoint(position);
+		int halfChunkSize = m_chunkSize / 2;
+		float heightValueAtPoint = GetRandomValueAtPoint(position);
 
 		//If this point is anchor point
-		if (((position.x + halfChunkSize) % m_chunkSize == 0) && ((position.x + halfChunkSize) % m_chunkSize == 0)){
+		if (((position.x + halfChunkSize) % (m_chunkSize - 1) == 0) && ((position.y + halfChunkSize) % (m_chunkSize - 1) == 0))
+		{
 			return SetHashAndReturn(position, heightValueAtPoint);
 		}
 
@@ -40,7 +44,7 @@ public class DiamondSquareGenerator: SeededGenerator
 
 		Vector2 point1, point2, point3, point4;
 
-		if(GetStepType(positionInChunk, requiredStep) == StepType.Square) {
+		if(GetStepType(positionInChunk, requiredStep) == StepType.Diamond) {
 			point1 = new Vector2(position.x, position.y + requiredStep);
 			point2 = new Vector2(position.x, position.y - requiredStep);
 			point3 = new Vector2(position.x - requiredStep, position.y);
@@ -61,8 +65,8 @@ public class DiamondSquareGenerator: SeededGenerator
 
 		float averageNeighbourHeight = (point1Height + point2Height + point3Height + point4Height) / 4;
 		float modifier = 1 / ((m_chunkSize - 1) / requiredStep);
-		float heightChange = heightValueAtPoint * modifier - m_height / 2;
-		float pointHeight = averageNeighbourHeight + heightChange;
+		float heightChange = (heightValueAtPoint - 0.5f) * modifier;
+		float pointHeight = averageNeighbourHeight + heightChange * m_roughness;
 		return SetHashAndReturn(position, pointHeight);
 	}
 
@@ -84,7 +88,7 @@ public class DiamondSquareGenerator: SeededGenerator
 	private int GetRequiredStep(Vector2 position)
 	{
 		int curStep = (m_chunkSize - 1) / 2;
-		while((position.x % curStep != 0) && (position.y % curStep != 0))
+		while((position.x % curStep != 0) || (position.y % curStep != 0))
 		{
 			curStep /= 2;
 		}
@@ -106,10 +110,22 @@ public class DiamondSquareGenerator: SeededGenerator
 
 	private Vector2 GetPositionInChunk(Vector2 position)
 	{
-		int halfChunkSize = (m_chunkSize - 1) / 2;
-		return new Vector2(
-			(position.x + halfChunkSize) % m_chunkSize,
-			(position.y + halfChunkSize) % m_chunkSize
+		int halfChunkSize = m_chunkSize / 2;
+
+		Vector2 res =new Vector2(
+			(position.x - halfChunkSize) % ((float)m_chunkSize - 1),
+			(position.y - halfChunkSize) % ((float)m_chunkSize - 1)
 			);
+
+		//In case of negative coordinates we need to adjust negative Moduloes to positibe
+		if(res.x <0)
+		{
+			res.x += m_chunkSize - 1;
+		}
+		if (res.y < 0)
+		{
+			res.y += m_chunkSize - 1;
+		}
+		return res;
 	}
 }
