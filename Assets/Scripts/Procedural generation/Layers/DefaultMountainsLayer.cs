@@ -14,6 +14,8 @@ public class DefaultMountainsLayer : BaseMountainLayer
 	[SerializeField] private float roughness;
 	[SerializeField] private int dataSaveTime;
 
+	[SerializeField] private float modificationValue;
+
 	private DiamondSquareGenerator m_diamondSquareGenerator;
 	private PerlinNoise m_perlinNoiseGenerator;
 
@@ -54,8 +56,9 @@ public class DefaultMountainsLayer : BaseMountainLayer
 			{
 				float pointAffilation = Mathf.Min(mountainAffilationMap[x, y] / maxAffilationValue, 1);
 				Vector2 pointPosition = new Vector2(areaCenter.x + (x - halfSize), areaCenter.y + (y - halfSize));
-				float DSValueAtPoint = Mathf.Pow(m_diamondSquareGenerator.GetValueAtPoint(pointPosition), 0.5f);
-				float mountainHeightValue = minMountainsHeight + (maxMountainsHeight - minMountainsHeight) * DSValueAtPoint;
+				float DSValueAtPoint = m_diamondSquareGenerator.GetValueAtPoint(pointPosition);
+				float modifiedDSValue = GetModifiedHeight(DSValueAtPoint);
+				float mountainHeightValue = minMountainsHeight + (maxMountainsHeight - minMountainsHeight) * modifiedDSValue;
 				float pointHeight = chunkHeightMap[x, y];
 				float newHeightValue = pointHeight + (mountainHeightValue - pointHeight) * pointAffilation;
 				updatedHeightMap[x, y] = newHeightValue;
@@ -90,5 +93,14 @@ public class DefaultMountainsLayer : BaseMountainLayer
 		}
 		chunkData.SetAlphaMaps(alphaMaps);
 		chunkData.SetTerrainHeightMap(updatedHeightMap);
+	}
+
+	private float GetModifiedHeight(float value)
+	{
+		//Note: It is need to be done to avoid NaN value
+		bool isNegative = value < 0;
+		float res = Mathf.Pow(Mathf.Abs(value), modificationValue);
+		if (isNegative) res *= -1;
+		return res;
 	}
 }

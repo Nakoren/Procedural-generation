@@ -21,3 +21,4 @@ MonoBehaviour:
   mountainGenerationPeriod: 129
   roughness: 2
   dataSaveTime: 10000
+  modificationValue: 0.5
